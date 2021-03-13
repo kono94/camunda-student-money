@@ -1,0 +1,26 @@
+<form name="manualRating" role="form">
+
+    <script cam-script type="text/form-script">
+
+    camForm.on('form-loaded', function() {
+      // fetch the variable named 'customerData'
+      camForm.variableManager.fetchVariable('student');
+    });
+
+    camForm.on('variables-fetched', function() {
+      // after the variables are fetched, bind the value of customerData to a angular
+      // scope value such that the form can work on it
+      $scope.student = camForm.variableManager.variable('student').value;
+
+      console.log(JSON.stringify($scope.student));
+      console.log($scope.student.name);
+    });
+  </script>
+
+    <p class="lead">Please provide a rating for the following customer</p>
+    <strong>{{student.name}} {{student.surName}}</strong><br>
+    {{student.plz}} {{student.city}}<br>
+    {{student.iban}}
+
+    <br>
+</form>

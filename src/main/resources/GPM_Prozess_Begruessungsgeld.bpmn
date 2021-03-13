@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_04ddllh" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.4.0">
+  <bpmn:collaboration id="student-money-process">
+    <bpmn:participant id="Participant_1y54alw" name="Begrüßungsgeld" processRef="student-money" />
+    <bpmn:participant id="Participant_03n67w5" name="Antragssteller" processRef="Process_1i84ro6" />
+  </bpmn:collaboration>
+  <bpmn:process id="student-money" name="Begrüßungsgeld" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_14oe9zh">
+      <bpmn:lane id="Lane_0nyu1z5" name="Stadt Bremerhaven" />
+      <bpmn:lane id="Lane_1hrtm3s" name="Backend">
+        <bpmn:flowNodeRef>Gateway_0pwa7gh</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1tth1uk</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0s0qzir</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0huitbx</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_049az8v</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_03a6qew</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_00xtbtv</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_17oxpte" name="IUP-Amt" />
+      <bpmn:lane id="Lane_1fpsq7q" name="AStA" />
+    </bpmn:laneSet>
+    <bpmn:sequenceFlow id="Flow_03x5281" sourceRef="Activity_03a6qew" targetRef="Gateway_0pwa7gh" />
+    <bpmn:sequenceFlow id="Flow_0kvk92o" sourceRef="Event_0s0qzir" targetRef="Activity_1tth1uk" />
+    <bpmn:sequenceFlow id="Flow_0tebcbn" sourceRef="Activity_1tth1uk" targetRef="Activity_03a6qew" />
+    <bpmn:sequenceFlow id="Flow_00x2imt" name="nein" sourceRef="Gateway_0pwa7gh" targetRef="Activity_049az8v">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!dataValidationApproved}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_0pwa7gh" name="Okay?">
+      <bpmn:incoming>Flow_03x5281</bpmn:incoming>
+      <bpmn:outgoing>Flow_00x2imt</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1ser8fi</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:dataObjectReference id="DataObjectReference_07mk047" name="Regelwerk ,,Daten überprüfen&#39;&#39;" dataObjectRef="DataObject_1sp0vhy">
+      <bpmn:documentation>Plz. muss mit 275 beginnen</bpmn:documentation>
+      <bpmn:extensionElements>
+        <camunda:properties>
+          <camunda:property />
+        </camunda:properties>
+      </bpmn:extensionElements>
+    </bpmn:dataObjectReference>
+    <bpmn:dataObject id="DataObject_1sp0vhy" />
+    <bpmn:serviceTask id="Activity_1tth1uk" name="Studenten-informationen einholen">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="url">http://host.docker.internal:6666/ws/students</camunda:inputParameter>
+            <camunda:inputParameter name="payload">
+              <camunda:script scriptFormat="freemarker" resource="templates/getStudentSoapEnvelope.ftl" />
+            </camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Content-Type">application/soap+xml;charset=UTF-8</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:outputParameter name="rawStudentXML">${S(response)
+.childElement("Body")
+.childElement("lwenstrom.net/ws/students", "getStudentResponse")
+.childElement("student")}</camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>soap-http-connector</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="iban">
+            <camunda:script scriptFormat="javascript" resource="parseIBAN.js" />
+          </camunda:outputParameter>
+          <camunda:outputParameter name="city">
+            <camunda:script scriptFormat="javascript" resource="parseCity.js" />
+          </camunda:outputParameter>
+          <camunda:outputParameter name="street">
+            <camunda:script scriptFormat="javascript" resource="parseStreet.js" />
+          </camunda:outputParameter>
+          <camunda:outputParameter name="plz">
+            <camunda:script scriptFormat="javascript" resource="parsePLZ.js" />
+          </camunda:outputParameter>
+          <camunda:outputParameter name="avgScore">
+            <camunda:script scriptFormat="javascript" resource="parseScore.js" />
+          </camunda:outputParameter>
+          <camunda:outputParameter name="name">
+            <camunda:script scriptFormat="javascript" resource="parseName.js" />
+          </camunda:outputParameter>
+          <camunda:outputParameter name="surName">
+            <camunda:script scriptFormat="javascript" resource="parseSurName.js" />
+          </camunda:outputParameter>
+          <camunda:outputParameter name="birthday">
+            <camunda:script scriptFormat="javascript" resource="parseBirthday.js" />
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+        <camunda:executionListener class="net.lwenstrom.util.StudentDataXmlParser" event="end" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0kvk92o</bpmn:incoming>
+      <bpmn:outgoing>Flow_0tebcbn</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:startEvent id="Event_0s0qzir" name="Matrikelnummer erhalten">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="studentID" label="Matrikelnummer" type="long" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_0kvk92o</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_05e6jy5" sourceRef="Activity_049az8v" targetRef="Event_0huitbx" />
+    <bpmn:endEvent id="Event_0huitbx" name="Daten fehlerhaft; An das IuP-Amt wenden">
+      <bpmn:incoming>Flow_05e6jy5</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="Activity_049az8v" name="Fehlermeldung einsehen" camunda:formKey="embedded:app:forms/display-error-message2.html">
+      <bpmn:incoming>Flow_00x2imt</bpmn:incoming>
+      <bpmn:outgoing>Flow_05e6jy5</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Activity_03a6qew" name="Daten überprüfen" camunda:class="net.lwenstrom.util.CheckDataDelegate">
+      <bpmn:incoming>Flow_0tebcbn</bpmn:incoming>
+      <bpmn:outgoing>Flow_03x5281</bpmn:outgoing>
+      <bpmn:property id="Property_0boif4k" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_11eorle">
+        <bpmn:sourceRef>DataObjectReference_07mk047</bpmn:sourceRef>
+        <bpmn:targetRef>Property_0boif4k</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_00xtbtv" name="Ende">
+      <bpmn:incoming>Flow_1ser8fi</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1ser8fi" name="ja" sourceRef="Gateway_0pwa7gh" targetRef="Event_00xtbtv">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!dataValidationApproved}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:textAnnotation id="TextAnnotation_08thrko">
+      <bpmn:text>10</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1uph063" sourceRef="Activity_03a6qew" targetRef="TextAnnotation_08thrko" />
+  </bpmn:process>
+  <bpmn:process id="Process_1i84ro6" isExecutable="false" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="student-money-process">
+      <bpmndi:BPMNShape id="Participant_1y54alw_di" bpmnElement="Participant_1y54alw" isHorizontal="true">
+        <dc:Bounds x="160" y="370" width="3990" height="1360" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1fpsq7q_di" bpmnElement="Lane_1fpsq7q" isHorizontal="true">
+        <dc:Bounds x="190" y="855" width="3960" height="190" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_17oxpte_di" bpmnElement="Lane_17oxpte" isHorizontal="true">
+        <dc:Bounds x="190" y="1045" width="3960" height="315" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1hrtm3s_di" bpmnElement="Lane_1hrtm3s" isHorizontal="true">
+        <dc:Bounds x="190" y="370" width="3960" height="485" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0nyu1z5_di" bpmnElement="Lane_0nyu1z5" isHorizontal="true">
+        <dc:Bounds x="190" y="1360" width="3960" height="370" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1ser8fi_di" bpmnElement="Flow_1ser8fi">
+        <di:waypoint x="825" y="655" />
+        <di:waypoint x="902" y="655" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="856" y="637" width="8" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05e6jy5_di" bpmnElement="Flow_05e6jy5">
+        <di:waypoint x="800" y="500" />
+        <di:waypoint x="800" y="458" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_00x2imt_di" bpmnElement="Flow_00x2imt">
+        <di:waypoint x="800" y="630" />
+        <di:waypoint x="800" y="580" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="806" y="601" width="21" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0tebcbn_di" bpmnElement="Flow_0tebcbn">
+        <di:waypoint x="520" y="655" />
+        <di:waypoint x="600" y="655" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0kvk92o_di" bpmnElement="Flow_0kvk92o">
+        <di:waypoint x="338" y="655" />
+        <di:waypoint x="420" y="655" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_03x5281_di" bpmnElement="Flow_03x5281">
+        <di:waypoint x="700" y="655" />
+        <di:waypoint x="775" y="655" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Gateway_0pwa7gh_di" bpmnElement="Gateway_0pwa7gh" isMarkerVisible="true">
+        <dc:Bounds x="775" y="630" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="744" y="618" width="32" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_07mk047_di" bpmnElement="DataObjectReference_07mk047">
+        <dc:Bounds x="612" y="735" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="556" y="760" width="58" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0329wpd_di" bpmnElement="Activity_1tth1uk">
+        <dc:Bounds x="420" y="615" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0s0qzir_di" bpmnElement="Event_0s0qzir">
+        <dc:Bounds x="302" y="637" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="274" y="675" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0huitbx_di" bpmnElement="Event_0huitbx">
+        <dc:Bounds x="782" y="422" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="760" y="380" width="82" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0cr22gk_di" bpmnElement="Activity_049az8v">
+        <dc:Bounds x="750" y="500" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1nivov2_di" bpmnElement="Activity_03a6qew">
+        <dc:Bounds x="600" y="615" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_00xtbtv_di" bpmnElement="Event_00xtbtv">
+        <dc:Bounds x="902" y="637" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="907" y="680" width="26" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_08thrko_di" bpmnElement="TextAnnotation_08thrko" bioc:stroke="rgb(229, 57, 53)" bioc:fill="rgb(255, 205, 210)">
+        <dc:Bounds x="520" y="735" width="100" height="30" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_1uph063_di" bpmnElement="Association_1uph063">
+        <di:waypoint x="604" y="692" />
+        <di:waypoint x="570" y="719" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Participant_03n67w5_di" bpmnElement="Participant_03n67w5" isHorizontal="true">
+        <dc:Bounds x="160" y="60" width="3990" height="250" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataInputAssociation_11eorle_di" bpmnElement="DataInputAssociation_11eorle">
+        <di:waypoint x="637" y="735" />
+        <di:waypoint x="647" y="695" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
