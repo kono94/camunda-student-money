@@ -32,6 +32,9 @@ import java.util.logging.Logger;
  * documentation it is suggested to use as few process variables as possible and whenever possible
  * to use reference IDs to certain objects. In this case the ID is the reference to the student object
  * itself.
+ * Furthermore it reduces the amount of separate js-scripts which are extracting single values
+ * from the SOAP response ("parseBirthday.js", "parseIBAN.js" etc.). External scripts may only return
+ * one single value that get saved up in a process variable.
  *
  * (Would have been even better to call the SOAP-WebService within a Java-Delegate and parse
  * the XML result directly but we have to use all sorts of scripts and delegate mechanisms)

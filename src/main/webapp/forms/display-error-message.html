@@ -1,38 +1,36 @@
-<form>
+<form name="manualRating" role="form">
 
-    <label for="studentID">StudentID:</label>
+    <script cam-script type="text/form-script">
 
-    <input type="text" id="studentID"
-           cam-variable-name="studentID"
-           cam-variable-type="Integer"
-           readonly="true">
-    <br>
-    <label for="studentName">Student Name:</label>
+    camForm.on('form-loaded', function() {
+      // fetch the variable named 'customerData'
+      camForm.variableManager.fetchVariable('student');
+      camForm.variableManager.fetchVariable('rejectionMessage');
 
-    <input type="text" id="studentName"
-           cam-variable-name="name"
-           cam-variable-type="String"
-           readonly="true">
-    <br>
-    <label for="studentSurName">Student Surname:</label>
+    });
 
-    <input type="text" id="studentSurName"
-           cam-variable-name="surname"
-           cam-variable-type="String"
-           readonly="true">
-    <br>
-    <label for="birthday">Birthday:</label>
+    camForm.on('variables-fetched', function() {
+      // after the variables are fetched, bind the value of customerData to a angular
+      // scope value such that the form can work on it
+      $scope.student = camForm.variableManager.variable('student').value;
+      $scope.rejectionMessage = camForm.variableManager.variable('rejectionMessage').value;
 
-    <input type="text" id="birthday"
-           cam-variable-name="birthday"
-           cam-variable-type="String"
-           readonly="true">
+      console.log(JSON.stringify($scope.student));
+      console.log($scope.student.name);
+    });
+  </script>
+
+    <p class="lead">Der folgende Antrag wurde abgelehnt:</p>
+    Name: <strong>{{student.name}} {{student.surName}}</strong>
+    <br>
+    Matrikelnummer: <strong>{{student.studentID}}</strong>
+    <br>
+    Addresse: <strong>{{student.street}}, {{student.plz}} {{student.city}}</strong>
+    <br>
+    IBAN: <strong>{{student.iban}}</strong>
     <br>
     <br>
-    <label for="rejectionMessage">Ablehnungsgrund:</label>
-    <input type="textarea" id="rejectionMessage"
-           cam-variable-name="rejectionMessage"
-           cam-variable-type="String"
-           readonly="true">
+    <p class="lead">Fehlermeldung (Ablehnungsgrund):</p>
+    {{rejectionMessage}}
 
 </form>

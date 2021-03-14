@@ -1,5 +1,7 @@
 package net.lwenstrom.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import javax.xml.bind.annotation.*;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -9,29 +11,42 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * "application/json" which then can be fetched and used by the front-end.
  *
  * Add @XMLElement and the corresponding SOAP namespace to each field...
+ *
+ * ATTENTION!!!
+ * The SPIN library will serialize java objects either as XML or JSON non deterministic (PURE RANDOM,
+ * which plugin will get loaded first from the classpath). If the front-end embedded form fetches this
+ * object (from process variable) it will 50% of the time be in a front-end readable format (JSON) but in 50%
+ * of cases it will get serialized as XML which cannot be interpreted by the front-end. Because of this
+ * jackson's @JsonSerialize annotation is used here in hope (it does not work) that it will intercept SPIN from
+ * interfering with the serialization. Normally the default SerializableDataFromat can be configured in the
+ * servlet container but as we are using the official docker container this is not an option...
+ * See:
+ * https://docs.camunda.org/manual/latest/reference/spin/extending-spin/#configuring-data-formats
+ * https://forum.camunda.org/t/serialization-problem-switch-to-xml/16795/2
  */
 @XmlRootElement(name="student", namespace="lwenstrom.net/ws/students")
 @XmlAccessorType(XmlAccessType.FIELD)
+@JsonSerialize
 public class Student {
 
     @XmlElement(namespace="lwenstrom.net/ws/students")
-    private String name;
+    protected String name;
     @XmlElement(namespace="lwenstrom.net/ws/students")
-    private String surname;
+    protected String surname;
     @XmlElement(namespace="lwenstrom.net/ws/students")
-    private long studentID;
+    protected long studentID;
     @XmlElement(namespace="lwenstrom.net/ws/students")
-    private double avgScore;
+    protected double avgScore;
     @XmlElement(namespace="lwenstrom.net/ws/students")
-    private XMLGregorianCalendar birthday;
+    protected XMLGregorianCalendar birthday;
     @XmlElement(namespace="lwenstrom.net/ws/students")
-    private String iban;
+    protected String iban;
     @XmlElement(namespace="lwenstrom.net/ws/students")
-    private String street;
+    protected String street;
     @XmlElement(namespace="lwenstrom.net/ws/students")
-    private int plz;
+    protected int plz;
     @XmlElement(namespace="lwenstrom.net/ws/students")
-    private String city;
+    protected String city;
 
 
     public String getName() {

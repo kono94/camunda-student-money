@@ -59,32 +59,6 @@
           </camunda:inputOutput>
           <camunda:connectorId>soap-http-connector</camunda:connectorId>
         </camunda:connector>
-        <camunda:inputOutput>
-          <camunda:outputParameter name="iban">
-            <camunda:script scriptFormat="javascript" resource="parseIBAN.js" />
-          </camunda:outputParameter>
-          <camunda:outputParameter name="city">
-            <camunda:script scriptFormat="javascript" resource="parseCity.js" />
-          </camunda:outputParameter>
-          <camunda:outputParameter name="street">
-            <camunda:script scriptFormat="javascript" resource="parseStreet.js" />
-          </camunda:outputParameter>
-          <camunda:outputParameter name="plz">
-            <camunda:script scriptFormat="javascript" resource="parsePLZ.js" />
-          </camunda:outputParameter>
-          <camunda:outputParameter name="avgScore">
-            <camunda:script scriptFormat="javascript" resource="parseScore.js" />
-          </camunda:outputParameter>
-          <camunda:outputParameter name="name">
-            <camunda:script scriptFormat="javascript" resource="parseName.js" />
-          </camunda:outputParameter>
-          <camunda:outputParameter name="surName">
-            <camunda:script scriptFormat="javascript" resource="parseSurName.js" />
-          </camunda:outputParameter>
-          <camunda:outputParameter name="birthday">
-            <camunda:script scriptFormat="javascript" resource="parseBirthday.js" />
-          </camunda:outputParameter>
-        </camunda:inputOutput>
         <camunda:executionListener class="net.lwenstrom.util.StudentDataXmlParser" event="end" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0kvk92o</bpmn:incoming>
@@ -102,7 +76,7 @@
     <bpmn:endEvent id="Event_0huitbx" name="Daten fehlerhaft; An das IuP-Amt wenden">
       <bpmn:incoming>Flow_05e6jy5</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:userTask id="Activity_049az8v" name="Fehlermeldung einsehen" camunda:formKey="embedded:app:forms/display-error-message2.html">
+    <bpmn:userTask id="Activity_049az8v" name="Fehlermeldung einsehen" camunda:formKey="embedded:app:forms/display-error-message.html">
       <bpmn:incoming>Flow_00x2imt</bpmn:incoming>
       <bpmn:outgoing>Flow_05e6jy5</bpmn:outgoing>
     </bpmn:userTask>
