@@ -74,16 +74,16 @@
       <artifactId>camunda-engine-plugin-connect</artifactId>
       <scope>provided</scope>
     </dependency>
-    <!-- Required to use Spin dataformat support in unit tests -->
+    <!-- Required to use Spin dataformat support in unit tests-->
     <dependency>
       <groupId>org.camunda.spin</groupId>
       <artifactId>camunda-spin-dataformat-all</artifactId>
-      <scope>test</scope>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine-plugin-spin</artifactId>
-      <scope>test</scope>
+      <scope>provided</scope>
     </dependency>
 
     <!-- Required to use Templates in unit tests -->
@@ -155,8 +155,8 @@
     <!-- Add your own dependencies here, if in compile scope, they are added to the war -->
     <dependency>
       <groupId>org.camunda.spin</groupId>
-      <artifactId>camunda-spin-dataformat-xml-dom</artifactId>
-      <version>1.9.0</version>
+      <artifactId>camunda-spin-dataformat-json-jackson</artifactId>
+      <version>1.9.1</version>
       <scope>provided</scope>
     </dependency>
 

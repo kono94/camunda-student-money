@@ -9,12 +9,12 @@
       <bpmn:lane id="Lane_0nyu1z5" name="Stadt Bremerhaven" />
       <bpmn:lane id="Lane_1hrtm3s" name="Backend">
         <bpmn:flowNodeRef>Gateway_0pwa7gh</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_1tth1uk</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Event_0s0qzir</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Event_0huitbx</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_049az8v</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_03a6qew</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Event_00xtbtv</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1tth1uk</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0s0qzir</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_17oxpte" name="IUP-Amt" />
       <bpmn:lane id="Lane_1fpsq7q" name="AStA" />
@@ -39,6 +39,29 @@
       </bpmn:extensionElements>
     </bpmn:dataObjectReference>
     <bpmn:dataObject id="DataObject_1sp0vhy" />
+    <bpmn:sequenceFlow id="Flow_05e6jy5" sourceRef="Activity_049az8v" targetRef="Event_0huitbx" />
+    <bpmn:endEvent id="Event_0huitbx" name="Daten fehlerhaft; An das IuP-Amt wenden">
+      <bpmn:incoming>Flow_05e6jy5</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="Activity_049az8v" name="Fehlermeldung einsehen" camunda:formKey="embedded:app:forms/display-error-message.html">
+      <bpmn:incoming>Flow_00x2imt</bpmn:incoming>
+      <bpmn:outgoing>Flow_05e6jy5</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Activity_03a6qew" name="Daten überprüfen" camunda:class="net.lwenstrom.util.CheckDataDelegate">
+      <bpmn:incoming>Flow_0tebcbn</bpmn:incoming>
+      <bpmn:outgoing>Flow_03x5281</bpmn:outgoing>
+      <bpmn:property id="Property_0boif4k" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_11eorle">
+        <bpmn:sourceRef>DataObjectReference_07mk047</bpmn:sourceRef>
+        <bpmn:targetRef>Property_0boif4k</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_00xtbtv" name="Ende">
+      <bpmn:incoming>Flow_1ser8fi</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1ser8fi" name="ja" sourceRef="Gateway_0pwa7gh" targetRef="Event_00xtbtv">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!dataValidationApproved}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
     <bpmn:serviceTask id="Activity_1tth1uk" name="Studenten-informationen einholen">
       <bpmn:extensionElements>
         <camunda:connector>
@@ -72,29 +95,6 @@
       </bpmn:extensionElements>
       <bpmn:outgoing>Flow_0kvk92o</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_05e6jy5" sourceRef="Activity_049az8v" targetRef="Event_0huitbx" />
-    <bpmn:endEvent id="Event_0huitbx" name="Daten fehlerhaft; An das IuP-Amt wenden">
-      <bpmn:incoming>Flow_05e6jy5</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:userTask id="Activity_049az8v" name="Fehlermeldung einsehen" camunda:formKey="embedded:app:forms/display-error-message.html">
-      <bpmn:incoming>Flow_00x2imt</bpmn:incoming>
-      <bpmn:outgoing>Flow_05e6jy5</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:serviceTask id="Activity_03a6qew" name="Daten überprüfen" camunda:class="net.lwenstrom.util.CheckDataDelegate">
-      <bpmn:incoming>Flow_0tebcbn</bpmn:incoming>
-      <bpmn:outgoing>Flow_03x5281</bpmn:outgoing>
-      <bpmn:property id="Property_0boif4k" name="__targetRef_placeholder" />
-      <bpmn:dataInputAssociation id="DataInputAssociation_11eorle">
-        <bpmn:sourceRef>DataObjectReference_07mk047</bpmn:sourceRef>
-        <bpmn:targetRef>Property_0boif4k</bpmn:targetRef>
-      </bpmn:dataInputAssociation>
-    </bpmn:serviceTask>
-    <bpmn:endEvent id="Event_00xtbtv" name="Ende">
-      <bpmn:incoming>Flow_1ser8fi</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_1ser8fi" name="ja" sourceRef="Gateway_0pwa7gh" targetRef="Event_00xtbtv">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!dataValidationApproved}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
     <bpmn:textAnnotation id="TextAnnotation_08thrko">
       <bpmn:text>10</bpmn:text>
     </bpmn:textAnnotation>
