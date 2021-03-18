@@ -1,4 +1,4 @@
-package net.lwenstrom.util;
+package net.lwenstrom.flow;
 
 import net.lwenstrom.LoggerDelegate;
 import net.lwenstrom.ProcessConstants;
@@ -55,6 +55,5 @@ public class StudentDataXmlParser implements ExecutionListener {
 
        LOGGER.warning(student.getIban());
        execution.setVariable(ProcessConstants.VAR_STUDENT, student);
-
     }
 }

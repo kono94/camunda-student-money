@@ -1,5 +1,6 @@
-package net.lwenstrom;
+package net.lwenstrom.model;
 
+import net.lwenstrom.ProcessConstants;
 import org.camunda.bpm.engine.delegate.VariableScope;
 
 public class RejectionProcessVariables {

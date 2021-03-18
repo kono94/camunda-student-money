@@ -47,7 +47,7 @@
       <bpmn:incoming>Flow_00x2imt</bpmn:incoming>
       <bpmn:outgoing>Flow_05e6jy5</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:serviceTask id="Activity_03a6qew" name="Daten überprüfen" camunda:class="net.lwenstrom.util.CheckDataDelegate">
+    <bpmn:serviceTask id="Activity_03a6qew" name="Daten überprüfen" camunda:class="net.lwenstrom.flow.CheckDataDelegate">
       <bpmn:incoming>Flow_0tebcbn</bpmn:incoming>
       <bpmn:outgoing>Flow_03x5281</bpmn:outgoing>
       <bpmn:property id="Property_0boif4k" name="__targetRef_placeholder" />
@@ -82,7 +82,7 @@
           </camunda:inputOutput>
           <camunda:connectorId>soap-http-connector</camunda:connectorId>
         </camunda:connector>
-        <camunda:executionListener class="net.lwenstrom.util.StudentDataXmlParser" event="end" />
+        <camunda:executionListener class="net.lwenstrom.flow.StudentDataXmlParser" event="end" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0kvk92o</bpmn:incoming>
       <bpmn:outgoing>Flow_0tebcbn</bpmn:outgoing>

@@ -1,6 +1,5 @@
 package net.lwenstrom;
 
-import java.util.*;
 import java.util.logging.Logger;
 
 import net.lwenstrom.util.AuthorizationManager;
