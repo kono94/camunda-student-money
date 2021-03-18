@@ -32,6 +32,8 @@ public class CheckDataDelegate implements JavaDelegate {
             rm.setFirstDataValidation(false);
             rm.setRejectionMessage(e.getMessage());
         }
+
+        rm.setFirstDataValidation(true);
     }
 
     private boolean checkPlz(int plz) throws IllegalFormatException {

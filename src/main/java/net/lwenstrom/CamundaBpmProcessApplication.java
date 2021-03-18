@@ -8,6 +8,7 @@ import org.camunda.bpm.application.ProcessApplication;
 import org.camunda.bpm.application.impl.ServletProcessApplication;
 
 import org.camunda.bpm.engine.ProcessEngine;
+
 import static org.camunda.bpm.engine.authorization.Permissions.*;
 
 
@@ -29,58 +30,62 @@ public class CamundaBpmProcessApplication extends ServletProcessApplication {
     public void onDeploymentFinished(ProcessEngine engine) {
         LOGGER.info("Application has been deployed");
         AuthorizationManager am = new AuthorizationManager(engine);
+        try {
+            // Delete default users and groups
+            am.deleteUser("john");
+            am.deleteUser("peter");
+            am.deleteUser("mary");
+            am.deleteGroup("accounting");
+            am.deleteGroup("management");
+            am.deleteGroup("sales");
 
-        // Delete default users and groups
-        am.deleteUser("john");
-        am.deleteUser("peter");
-        am.deleteUser("mary");
-        am.deleteGroup("accounting");
-        am.deleteGroup("management");
-        am.deleteGroup("sales");
-
-        am.deleteFilter("Mary's Tasks");
-        am.deleteFilter("Peter's Tasks");
-        am.deleteFilter("John's Tasks");
-        am.deleteFilter("Accounting");
-
-
-        // Create users
-        am.createNewUser("judith", "Judith", "Moller", "judith", "jmoller@asta.hs-bremerhaven.de");
-        am.createNewUser("alexander", "Alexander", "Schulz", "alexander", "aschulz@iup.hs-bremerhaven.de");
-        am.createNewUser("sabine", "Sabine", "Kreesmann", "sabine", "skreesmann@stadt-bremerhaven.de");
-        am.createNewUser("christian", "Christian", "Erdnuss", "christian", "cerdnuss@stadt-bremerhaven.de");
+            am.deleteFilter("Mary's Tasks");
+            am.deleteFilter("Peter's Tasks");
+            am.deleteFilter("John's Tasks");
+            am.deleteFilter("Accounting");
 
 
-        // Create groups (AStA, IuP and city)
-        am.createNewGroup("asta", "AStA");
-        am.createNewGroup("iup", "IuP");
-        am.createNewGroup("city", "Stadt Bremerhaven");
+            // Create users
+            am.createNewUser("judith", "Judith", "Moller", "judith", "jmoller@asta.hs-bremerhaven.de");
+            am.createNewUser("alexander", "Alexander", "Schulz", "alexander", "aschulz@iup.hs-bremerhaven.de");
+            am.createNewUser("sabine", "Sabine", "Kreesmann", "sabine", "skreesmann@stadt-bremerhaven.de");
+            am.createNewUser("christian", "Christian", "Erdnuss", "christian", "cerdnuss@stadt-bremerhaven.de");
 
 
-        //  Add users to respective groups
-        am.createMembership("judith", "asta");
-        am.createMembership("alexander", "iup");
-        am.createMembership("sabine", "city");
-        am.createMembership("christian", "city");
+            // Create groups (AStA, IuP and city)
+            am.createNewGroup("asta", "AStA");
+            am.createNewGroup("iup", "IuP");
+            am.createNewGroup("city", "Stadt Bremerhaven");
 
 
-        // authorize groups for tasklist only:
-        am.setTasklistAuthorizationForGroup("asta", ProcessConstants.PROCESS_DEFINITION_KEY, READ, READ_HISTORY);
-        am.setTasklistAuthorizationForGroup("iup", ProcessConstants.PROCESS_DEFINITION_KEY, READ, READ_HISTORY);
-        am.setTasklistAuthorizationForGroup("city", ProcessConstants.PROCESS_DEFINITION_KEY, READ, READ_HISTORY);
+            //  Add users to respective groups
+            am.createMembership("judith", "asta");
+            am.createMembership("alexander", "iup");
+            am.createMembership("sabine", "city");
+            am.createMembership("christian", "city");
 
 
-        // set user permissions in group
-        am.setUserPermissionInGroup("asta", "judith", READ);
-        am.setUserPermissionInGroup("iup", "alexander", READ);
-        am.setUserPermissionInGroup("city", "sabine", READ);
-        am.setUserPermissionInGroup("city", "christian", READ);
+            // authorize groups for tasklist only:
+            am.setTasklistAuthorizationForGroup("asta", ProcessConstants.PROCESS_DEFINITION_KEY, READ, READ_HISTORY);
+            am.setTasklistAuthorizationForGroup("iup", ProcessConstants.PROCESS_DEFINITION_KEY, READ, READ_HISTORY);
+            am.setTasklistAuthorizationForGroup("city", ProcessConstants.PROCESS_DEFINITION_KEY, READ, READ_HISTORY);
 
 
-        // create default filters
-        am.createGroupFilter("Aufgaben für Gruppe AStA", -3, "asta", "AStA", "demo", READ);
-        am.createGroupFilter("Aufgaben für Gruppe IuP", -3, "iup", "IuP", "demo", READ);
-        am.createGroupFilter("Aufgaben für Gruppe Stadt", -3, "city", "Stadt Bremerhaven", "demo", READ);
+            // set user permissions in group
+            am.setUserPermissionInGroup("asta", "judith", READ);
+            am.setUserPermissionInGroup("iup", "alexander", READ);
+            am.setUserPermissionInGroup("city", "sabine", READ);
+            am.setUserPermissionInGroup("city", "christian", READ);
+
+
+            // create default filters
+            am.createGroupFilter("Aufgaben für Gruppe AStA", -3, "asta", "AStA", "demo", READ);
+            am.createGroupFilter("Aufgaben für Gruppe IuP", -3, "iup", "IuP", "demo", READ);
+            am.createGroupFilter("Aufgaben für Gruppe Stadt", -3, "city", "Stadt Bremerhaven", "demo", READ);
+
+        } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
+        }
 
 
         // start an initial process instance
