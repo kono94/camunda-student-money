@@ -11,6 +11,11 @@ public class StudentEntityStorage implements StudentTable{
 
     public StudentEntityStorage(){
        students = new HashMap<>();
+
+       //adding dummy student to display case if request has already been sent by student
+       Student dummy = new Student();
+       dummy.setStudentID(123);
+       students.put(dummy.getStudentID(), dummy);
     }
     @Override
     public void save(Student student) {

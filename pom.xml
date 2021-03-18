@@ -157,7 +157,7 @@
       <groupId>org.camunda.spin</groupId>
       <artifactId>camunda-spin-dataformat-json-jackson</artifactId>
       <version>1.9.1</version>
-      <scope>provided</scope>
+      <scope>compile</scope>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
