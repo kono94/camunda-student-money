@@ -21,4 +21,8 @@ public class RejectionProcessVariables {
     public void setFirstDataValidation(boolean approved){
         variableScope.setVariable(ProcessConstants.PROCESS_DATA_VALIDATION_APPROVED, approved);
     }
+
+    public void setDuplicateCheckApproved(boolean approved){
+        variableScope.setVariable(ProcessConstants.PROCESS_DUPLICATION_CHECK_APPROVED, approved);
+    }
 }

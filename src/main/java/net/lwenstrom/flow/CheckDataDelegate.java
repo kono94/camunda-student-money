@@ -28,19 +28,27 @@ public class CheckDataDelegate implements JavaDelegate {
         try{
             checkPlz(student.getPlz());
             checkIBAN(student.getIban());
-        }catch (IllegalFormatException e){
+        }catch (IllegalArgumentException e){
             rm.setFirstDataValidation(false);
             rm.setRejectionMessage(e.getMessage());
         }
-
         rm.setFirstDataValidation(true);
     }
 
-    private boolean checkPlz(int plz) throws IllegalFormatException {
-            return validPLZs.contains(plz);
+    private void checkPlz(int plz) throws IllegalArgumentException {
+        if(!validPLZs.contains(plz)) throw new IllegalArgumentException("PLZ ausserhalb des erlaubten Bereiches.");
     }
 
-    private boolean checkIBAN(String iban) throws IllegalFormatException{
-        return true;
+    private void checkIBAN(String iban) throws IllegalArgumentException{
+        if(iban == null){
+            throw new IllegalArgumentException("IBAN ist nicht angegeben");
+        }
+        if(!iban.substring(0,2).equals("DE")){
+            throw new IllegalArgumentException("IBAN muss mit 'DE' beginnen");
+        }
+        if (iban.charAt(2) < '0' || iban.charAt(2) > '9' || iban.charAt(3) < '0' || iban.charAt(3) > '9') {
+            throw new IllegalArgumentException("IBAN hat falsches Format");
+        }
+
     }
 }

@@ -6,6 +6,7 @@ public class ProcessConstants {
 
   public static final String PROCESS_REJECTION_MESSAGE = "rejectionMessage";
   public static final String PROCESS_DATA_VALIDATION_APPROVED = "dataValidationApproved";
+  public static final String PROCESS_DUPLICATION_CHECK_APPROVED = "duplicationCheckApproved";
 
   // used in the process model
   public static final String VAR_STUDENT_ID = "studentID";
