@@ -19,8 +19,8 @@ import java.util.logging.Logger;
  * "jaxb-api" from "java.xml.bin"
  * and
  * "jaxb-runtime" from "org.glassfish.jaxb"
- *
- *
+ * <p>
+ * <p>
  * Why:
  * We use the soap-http-connector in the modeler as some sort of inline "front-end-ish" call
  * that will parse the SOAP-Response (the student data) as XML-String to the output variable
@@ -35,7 +35,7 @@ import java.util.logging.Logger;
  * Furthermore it reduces the amount of separate js-scripts which are extracting single values
  * from the SOAP response ("parseBirthday.js", "parseIBAN.js" etc.). External scripts may only return
  * one single value that get saved up in a process variable.
- *
+ * <p>
  * (Would have been even better to call the SOAP-WebService within a Java-Delegate and parse
  * the XML result directly but we have to use all sorts of scripts and delegate mechanisms)
  * (See the logs from the LOGGER in docker container by using "docker logs camunda" or
@@ -46,14 +46,14 @@ public class StudentDataXmlParser implements ExecutionListener {
 
     @Override
     public void notify(DelegateExecution execution) throws Exception {
-       String studentRawXml = execution.getVariable(ProcessConstants.VAR_STUDENT_RAW_XML).toString();
-       LOGGER.info(studentRawXml);
+        String studentRawXml = execution.getVariable(ProcessConstants.VAR_STUDENT_RAW_XML).toString();
+        LOGGER.info(studentRawXml);
 
-       JAXBContext jaxbContext = JAXBContext.newInstance(Student.class);
-       Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-       Student student = (Student) jaxbUnmarshaller.unmarshal(new StringReader(studentRawXml));
+        JAXBContext jaxbContext = JAXBContext.newInstance(Student.class);
+        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+        Student student = (Student) jaxbUnmarshaller.unmarshal(new StringReader(studentRawXml));
 
-       LOGGER.warning(student.getIban());
-       execution.setVariable(ProcessConstants.VAR_STUDENT, student);
+        LOGGER.warning(student.getIban());
+        execution.setVariable(ProcessConstants.VAR_STUDENT, student);
     }
 }

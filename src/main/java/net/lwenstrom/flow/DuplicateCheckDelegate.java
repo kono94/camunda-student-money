@@ -1,7 +1,8 @@
 package net.lwenstrom.flow;
 
 import net.lwenstrom.ProcessConstants;
-import net.lwenstrom.mock.StudentEntityStorage;
+import net.lwenstrom.mock.StudentTable;
+import net.lwenstrom.mock.StudentTableEntry;
 import net.lwenstrom.model.RejectionProcessVariables;
 import net.lwenstrom.model.Student;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
@@ -13,12 +14,12 @@ public class DuplicateCheckDelegate implements JavaDelegate {
     public void execute(DelegateExecution execution) throws Exception {
         Student student = (Student) execution.getVariable(ProcessConstants.VAR_STUDENT);
         RejectionProcessVariables rm = new RejectionProcessVariables(execution);
-        StudentEntityStorage studentTable = StudentEntityStorage.getInstance();
+        StudentTable studentTable = StudentTable.getInstance();
 
-        if(studentTable.search(student.getStudentID()) == null){
+        if (!studentTable.contains(student.getStudentID())) {
             rm.setDuplicateCheckApproved(true);
-            studentTable.save(student);
-        }else{
+            studentTable.save(new StudentTableEntry(student));
+        } else {
             rm.setDuplicateCheckApproved(false);
             rm.setRejectionMessage("Dieser Student hat bereits einen Bergrueßungsgeldantrag gestellt!");
         }

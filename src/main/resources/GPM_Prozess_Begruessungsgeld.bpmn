@@ -24,10 +24,10 @@
         <bpmn:flowNodeRef>Activity_1j70nrp</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_0im9beq</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1mpwoal</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_14y6vt0</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1kdtvwe</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_0ba335f</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1njr9vm</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_14y6vt0</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_17oxpte" name="IUP-Amt" />
       <bpmn:lane id="Lane_1fpsq7q" name="AStA">
@@ -147,11 +147,7 @@
       <bpmn:incoming>Flow_0yne624</bpmn:incoming>
       <bpmn:outgoing>Flow_0h826sg</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_14y6vt0" name="Daten des Formulars in DB speichern">
-      <bpmn:incoming>Flow_126l9kf</bpmn:incoming>
-      <bpmn:outgoing>Flow_06pj5qt</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_1kdtvwe" name="Aktivierungslink generieren">
+    <bpmn:serviceTask id="Activity_1kdtvwe" name="Aktivierungslink generieren" camunda:class="net.lwenstrom.ActivationLinkGeneratorDelegate">
       <bpmn:incoming>Flow_06pj5qt</bpmn:incoming>
       <bpmn:outgoing>Flow_1xdcxym</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -162,6 +158,11 @@
       <bpmn:incoming>Flow_15yrryi</bpmn:incoming>
       <bpmn:outgoing>Flow_192pm81</bpmn:outgoing>
     </bpmn:serviceTask>
+    <bpmn:task id="Activity_14y6vt0" name="Daten des Formulars in DB speichern">
+      <bpmn:documentation>Geschieht direkt nach der Prüfung auf Duplikate im ServiceTask "Historische Anträge durchsuchen"</bpmn:documentation>
+      <bpmn:incoming>Flow_126l9kf</bpmn:incoming>
+      <bpmn:outgoing>Flow_06pj5qt</bpmn:outgoing>
+    </bpmn:task>
     <bpmn:textAnnotation id="TextAnnotation_08thrko">
       <bpmn:text>10</bpmn:text>
     </bpmn:textAnnotation>
@@ -371,9 +372,6 @@
       <bpmndi:BPMNShape id="Activity_0sexo1y_di" bpmnElement="Activity_1mpwoal">
         <dc:Bounds x="910" y="615" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0e3hnxt_di" bpmnElement="Activity_14y6vt0">
-        <dc:Bounds x="1250" y="720" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0mrobam_di" bpmnElement="Activity_1kdtvwe">
         <dc:Bounds x="1250" y="585" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -382,6 +380,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_064bj94_di" bpmnElement="Activity_1njr9vm">
         <dc:Bounds x="1450" y="585" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0j9ekad_di" bpmnElement="Activity_14y6vt0">
+        <dc:Bounds x="1250" y="720" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Association_1uph063_di" bpmnElement="Association_1uph063">
         <di:waypoint x="604" y="692" />
