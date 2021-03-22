@@ -12,7 +12,11 @@ public class DuplicateCheckDelegate implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        Student student = (Student) execution.getVariable(ProcessConstants.VAR_STUDENT);
+        // get student from database table by studentID from process variables
+        long studentID = (Long) execution.getVariable(ProcessConstants.VAR_STUDENT_ID);
+        StudentTableEntry studentTableEntry = StudentTable.getInstance().search(studentID);
+        Student student = studentTableEntry.getStudent();
+
         RejectionProcessVariables rm = new RejectionProcessVariables(execution);
         StudentTable studentTable = StudentTable.getInstance();
 

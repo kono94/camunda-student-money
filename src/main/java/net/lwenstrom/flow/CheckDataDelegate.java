@@ -1,6 +1,8 @@
 package net.lwenstrom.flow;
 
 import net.lwenstrom.ProcessConstants;
+import net.lwenstrom.mock.StudentTable;
+import net.lwenstrom.mock.StudentTableEntry;
 import net.lwenstrom.model.RejectionProcessVariables;
 import net.lwenstrom.model.Student;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
@@ -21,7 +23,10 @@ public class CheckDataDelegate implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        Student student = (Student) execution.getVariable(ProcessConstants.VAR_STUDENT);
+        // get student from database table by studentID from process variables
+        long studentID = (Long) execution.getVariable(ProcessConstants.VAR_STUDENT_ID);
+        StudentTableEntry studentTableEntry = StudentTable.getInstance().search(studentID);
+        Student student = studentTableEntry.getStudent();
 
 
         RejectionProcessVariables rm = new RejectionProcessVariables(execution);
