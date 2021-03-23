@@ -11,8 +11,11 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public class ActivationLinkGeneratorDelegate implements JavaDelegate {
+
+    private final Logger LOGGER = Logger.getLogger(ActivationLinkGeneratorDelegate.class.getName());
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {

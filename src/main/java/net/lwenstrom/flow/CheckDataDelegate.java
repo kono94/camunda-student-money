@@ -11,8 +11,11 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class CheckDataDelegate implements JavaDelegate {
+
+    private final Logger LOGGER = Logger.getLogger(CheckDataDelegate.class.getName());
 
     private List<Integer> validPLZs;
 

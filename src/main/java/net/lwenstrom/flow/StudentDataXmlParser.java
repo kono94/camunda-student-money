@@ -42,7 +42,8 @@ import java.util.logging.Logger;
  * in the container itself (docker exec -it camunda bash -> logs/catalina.2021-03-XX.log)
  */
 public class StudentDataXmlParser implements ExecutionListener {
-    private final Logger LOGGER = Logger.getLogger(LoggerDelegate.class.getName());
+
+    private final Logger LOGGER = Logger.getLogger(StudentDataXmlParser.class.getName());
 
     @Override
     public void notify(DelegateExecution execution) throws Exception {

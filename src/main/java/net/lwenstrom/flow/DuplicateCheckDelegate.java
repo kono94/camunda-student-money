@@ -8,7 +8,11 @@ import net.lwenstrom.model.Student;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
+import java.util.logging.Logger;
+
 public class DuplicateCheckDelegate implements JavaDelegate {
+
+    private final Logger LOGGER = Logger.getLogger(DuplicateCheckDelegate.class.getName());
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {

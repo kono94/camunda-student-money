@@ -24,6 +24,7 @@ import static org.camunda.bpm.engine.authorization.Permissions.ACCESS;
 import static org.camunda.bpm.engine.authorization.Resources.*;
 
 public class AuthorizationManager {
+
     private final Logger LOGGER = Logger.getLogger(AuthorizationManager.class.getName());
 
     final IdentityServiceImpl identityService;
