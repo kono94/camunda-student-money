@@ -10,20 +10,18 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 
 import java.util.logging.Logger;
 
-public class DuplicateCheckDelegate implements JavaDelegate {
+public class CheckDuplicateDelegate implements JavaDelegate {
 
-    private final Logger LOGGER = Logger.getLogger(DuplicateCheckDelegate.class.getName());
+    private final Logger LOGGER = Logger.getLogger(CheckDuplicateDelegate.class.getName());
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        // get student from database table by studentID from process variables
-        long studentID = (Long) execution.getVariable(ProcessConstants.VAR_STUDENT_ID);
-        StudentTableEntry studentTableEntry = StudentTable.getInstance().search(studentID);
-        Student student = studentTableEntry.getStudent();
+        Student student  = (Student) execution.getVariable(ProcessConstants.VAR_STUDENT);
 
         RejectionProcessVariables rm = new RejectionProcessVariables(execution);
         StudentTable studentTable = StudentTable.getInstance();
 
+        LOGGER.info(studentTable.count() + "");
         if (!studentTable.contains(student.getStudentID())) {
             rm.setDuplicateCheckApproved(true);
             studentTable.save(new StudentTableEntry(student));

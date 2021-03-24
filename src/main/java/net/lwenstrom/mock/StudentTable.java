@@ -56,4 +56,9 @@ public class StudentTable implements TableMock<Long, StudentTableEntry> {
     public int count() {
         return students.size();
     }
+
+    // For developing purposes only
+    public void reset(){
+        students = new Hashtable<>();
+    }
 }

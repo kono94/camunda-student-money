@@ -26,11 +26,7 @@ public class CheckDataDelegate implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        // get student from database table by studentID from process variables
-        long studentID = (Long) execution.getVariable(ProcessConstants.VAR_STUDENT_ID);
-        StudentTableEntry studentTableEntry = StudentTable.getInstance().search(studentID);
-        Student student = studentTableEntry.getStudent();
-
+        Student student  = (Student) execution.getVariable(ProcessConstants.VAR_STUDENT);
 
         RejectionProcessVariables rm = new RejectionProcessVariables(execution);
         try {

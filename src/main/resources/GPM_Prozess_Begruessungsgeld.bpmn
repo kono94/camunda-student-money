@@ -106,7 +106,9 @@
       </bpmn:extensionElements>
       <bpmn:outgoing>Flow_0kvk92o</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_0yne624" name="ja" sourceRef="Gateway_0pwa7gh" targetRef="Activity_1mpwoal" />
+    <bpmn:sequenceFlow id="Flow_0yne624" name="ja" sourceRef="Gateway_0pwa7gh" targetRef="Activity_1mpwoal">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${dataValidationApproved}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
     <bpmn:exclusiveGateway id="Gateway_1itk7q2" name="Eintrag vorhanden?">
       <bpmn:incoming>Flow_0h826sg</bpmn:incoming>
       <bpmn:outgoing>Flow_114jzcu</bpmn:outgoing>
@@ -142,11 +144,11 @@
       <bpmn:incoming>Flow_0yne624</bpmn:incoming>
       <bpmn:outgoing>Flow_0h826sg</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_1kdtvwe" name="Aktivierungslink generieren" camunda:class="net.lwenstrom.ActivationLinkGeneratorDelegate">
+    <bpmn:serviceTask id="Activity_1kdtvwe" name="Aktivierungslink generieren" camunda:class="net.lwenstrom.flow.ActivationLinkGeneratorDelegate">
       <bpmn:incoming>Flow_06pj5qt</bpmn:incoming>
       <bpmn:outgoing>Flow_1xdcxym</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_1njr9vm" name="PDF-Datei mit Antrag generieren" camunda:class="net.lwenstrom.PdfGenerationDelegate">
+    <bpmn:serviceTask id="Activity_1njr9vm" name="PDF-Datei mit Antrag generieren" camunda:class="net.lwenstrom.flow.PdfGenerationDelegate">
       <bpmn:incoming>Flow_15yrryi</bpmn:incoming>
       <bpmn:outgoing>Flow_192pm81</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -158,7 +160,7 @@
     <bpmn:receiveTask id="Activity_0ba335f" name="Aktivierung in DB speichern" messageRef="activationLinkClicked">
       <bpmn:outgoing>Flow_15yrryi</bpmn:outgoing>
     </bpmn:receiveTask>
-    <bpmn:sendTask id="Activity_1j70nrp" name="E-Mail mit Link versenden" camunda:class="net.lwenstrom.SendActivationLinkDelegate">
+    <bpmn:sendTask id="Activity_1j70nrp" name="E-Mail mit Link versenden" camunda:class="net.lwenstrom.flow.SendActivationLinkDelegate">
       <bpmn:incoming>Flow_1xdcxym</bpmn:incoming>
     </bpmn:sendTask>
     <bpmn:sendTask id="Activity_0im9beq" name="E-Mail mit PDF versenden" camunda:class="net.lwenstrom.SendPdfDelegate">

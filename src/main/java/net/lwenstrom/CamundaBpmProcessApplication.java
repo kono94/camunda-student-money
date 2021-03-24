@@ -2,6 +2,7 @@ package net.lwenstrom;
 
 import java.util.logging.Logger;
 
+import net.lwenstrom.mock.StudentTable;
 import net.lwenstrom.util.AuthorizationManager;
 import org.camunda.bpm.application.PostDeploy;
 import org.camunda.bpm.application.ProcessApplication;
@@ -29,8 +30,12 @@ public class CamundaBpmProcessApplication extends ServletProcessApplication {
     @PostDeploy
     public void onDeploymentFinished(ProcessEngine engine) {
         LOGGER.info("Application has been deployed");
+
+        //TODO: delete for "production"
+        StudentTable.getInstance().reset();
+
         AuthorizationManager am = new AuthorizationManager(engine);
-        try {
+            try {
             // Delete default users and groups
             am.deleteUser("john");
             am.deleteUser("peter");
