@@ -1,6 +1,7 @@
 package net.lwenstrom.util;
 
 import net.lwenstrom.CamundaBpmProcessApplication;
+import net.lwenstrom.ProcessConstants;
 import org.camunda.bpm.engine.AuthorizationService;
 import org.camunda.bpm.engine.FilterService;
 import org.camunda.bpm.engine.ProcessEngine;
@@ -14,9 +15,7 @@ import org.camunda.bpm.engine.identity.User;
 import org.camunda.bpm.engine.impl.IdentityServiceImpl;
 import org.camunda.bpm.engine.task.TaskQuery;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static org.camunda.bpm.engine.authorization.Authorization.AUTH_TYPE_GRANT;
@@ -105,6 +104,15 @@ public class AuthorizationManager {
        authorizationService.saveAuthorization(authorization);
     }
 
+    public void createAllTasksFilter(){
+        Map<String, Object> filterProperties = new HashMap<>();
+        filterProperties.put("description", "Zeigt alle aktiven Anträge aus allen Gruppen");
+        filterProperties.put("priority", 10);
+        addVariables(filterProperties);
+        TaskQuery query = taskService.createTaskQuery();
+        Filter allTasksFilter = filterService.newTaskFilter().setName("Alle Anträge").setProperties(filterProperties).setOwner("demo").setQuery(query);
+        filterService.saveFilter(allTasksFilter);
+    }
 
     public void createGroupFilter(String description,
                                   int priority,
@@ -115,7 +123,7 @@ public class AuthorizationManager {
         Map<String, Object> filterProperties = new HashMap<>();
         filterProperties.put("description", description);
         filterProperties.put("priority", priority);
-        // addVariables(filterProperties);
+        addVariables(filterProperties);
         TaskQuery query = taskService.createTaskQuery().taskCandidateGroupIn(Arrays.asList(groupId)).taskUnassigned();
         Filter candidateGroupTasksFilter = filterService.newTaskFilter().setName(filterName).setProperties(filterProperties).setOwner(owner).setQuery(query);
         filterService.saveFilter(candidateGroupTasksFilter);
@@ -129,5 +137,20 @@ public class AuthorizationManager {
         managementGroupFilterRead.setGroupId(groupId);
         authorizationService.saveAuthorization(managementGroupFilterRead);
 
+    }
+
+    protected void addVariables(Map<String, Object> filterProperties) {
+        List<Object> variables = new ArrayList<>();
+
+        addVariable(variables, ProcessConstants.VAR_STUDENT_ID, "Matrikelnummer");
+
+        filterProperties.put("variables", variables);
+    }
+
+    protected void addVariable(List<Object> variables, String name, String label) {
+        Map<String, String> variable = new HashMap<>();
+        variable.put("name", name);
+        variable.put("label", label);
+        variables.add(variable);
     }
 }

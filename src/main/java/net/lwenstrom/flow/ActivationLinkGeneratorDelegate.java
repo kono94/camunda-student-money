@@ -29,5 +29,6 @@ public class ActivationLinkGeneratorDelegate implements JavaDelegate {
         String uuid = UUID.randomUUID().toString();
         activationLinkTable.save(new ActivationLinkTableEntry(uuid, student));
         new ActivationLinkProcessVariables(execution).setActivationLink(uuid);
+        LOGGER.info("Activation UUID has been saved in database (" + uuid + "), executionID=" + execution.getId());
     }
 }

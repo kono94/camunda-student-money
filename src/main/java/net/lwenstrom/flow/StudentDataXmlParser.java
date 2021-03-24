@@ -54,7 +54,7 @@ public class StudentDataXmlParser implements ExecutionListener {
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         Student student = (Student) jaxbUnmarshaller.unmarshal(new StringReader(studentRawXml));
 
-        LOGGER.warning(student.getIban());
+        LOGGER.info("SOAP XML Response wurde erfolgreich als Java-Objekt geparsed! (executionID=" + execution.getId() + ")");
         execution.setVariable(ProcessConstants.VAR_STUDENT, student);
     }
 }

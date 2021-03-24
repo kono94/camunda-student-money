@@ -11,6 +11,6 @@ public class PdfGenerationDelegate implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-         LOGGER.info("PDF GENERATION");
+         LOGGER.info("PDF wurde erstellt (executionID=" + execution.getId() + ")");
     }
 }

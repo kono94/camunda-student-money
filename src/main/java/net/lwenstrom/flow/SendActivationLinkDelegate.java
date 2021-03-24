@@ -31,8 +31,7 @@ public class SendActivationLinkDelegate implements JavaDelegate {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
 
         String uuid = new ActivationLinkProcessVariables(execution).getActivationLink();
-
-
+        String receipent = "test@studenten.hs-bremerhaven.de";
         EmailService emailService = new EmailService();
         StringBuilder sb = new StringBuilder();
         sb.append("Moin Herr/ Frau ");
@@ -41,7 +40,7 @@ public class SendActivationLinkDelegate implements JavaDelegate {
         sb.append("Bitte bestätigen Sie ihren Antrag indem Sie auf folgenen Link klicken: \n\n");
         sb.append("http://activate.asta.de/?activationLink=").append(uuid).append("\n\n");
         sb.append("Ihr AStA-Team");
-        emailService.sendMail(new URI("test@studenten.hs-bremerhaven.de"), sb.toString());
-        LOGGER.info(sb.toString());
+        emailService.sendMail(new URI(receipent), sb.toString());
+        LOGGER.info("E-Mail wurde gesendet an " + receipent + " (executionID="  + execution.getId() +  ") Payload: \n\n" + sb.toString());
     }
 }

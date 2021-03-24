@@ -34,9 +34,14 @@ public class CheckDataDelegate implements JavaDelegate {
             checkIBAN(student.getIban());
         } catch (IllegalArgumentException e) {
             rm.setFirstDataValidation(false);
+            LOGGER.warning("Prüfung der Daten ergab einen Fehler! "
+                    + " (executionID=" + execution.getId());
             rm.setRejectionMessage(e.getMessage());
         }
         rm.setFirstDataValidation(true);
+        LOGGER.info("Daten für den Studenten " + student.getName() + " " + student.getSurname()
+                + "(" + student.getStudentID() + ") wurden überprüft und sind korrekt"
+                + " (executionID=" + execution.getId());
     }
 
     private void checkPlz(int plz) throws IllegalArgumentException {

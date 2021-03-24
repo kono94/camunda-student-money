@@ -35,22 +35,26 @@ public class CamundaBpmProcessApplication extends ServletProcessApplication {
         StudentTable.getInstance().reset();
 
         AuthorizationManager am = new AuthorizationManager(engine);
-            try {
+        try {
             // Delete default users and groups
+            LOGGER.info("Lösche existierende User...");
             am.deleteUser("john");
             am.deleteUser("peter");
             am.deleteUser("mary");
+            LOGGER.info("Lösche existierende Gruppen...");
             am.deleteGroup("accounting");
             am.deleteGroup("management");
             am.deleteGroup("sales");
-
+            LOGGER.info("Lösche existierende TaskFilter...");
             am.deleteFilter("Mary's Tasks");
             am.deleteFilter("Peter's Tasks");
             am.deleteFilter("John's Tasks");
             am.deleteFilter("Accounting");
+            am.deleteFilter("All Tasks");
 
 
             // Create users
+            LOGGER.info("Erzeuge neue Nutzer (Judith, Alexander, Sabine und Christian)...");
             am.createNewUser("judith", "Judith", "Moller", "judith", "jmoller@asta.hs-bremerhaven.de");
             am.createNewUser("alexander", "Alexander", "Schulz", "alexander", "aschulz@iup.hs-bremerhaven.de");
             am.createNewUser("sabine", "Sabine", "Kreesmann", "sabine", "skreesmann@stadt-bremerhaven.de");
@@ -58,12 +62,14 @@ public class CamundaBpmProcessApplication extends ServletProcessApplication {
 
 
             // Create groups (AStA, IuP and city)
+            LOGGER.info("Erzeuge neue Gruppen AStA, IuP und Stadt Bremerhaven...");
             am.createNewGroup("asta", "AStA");
             am.createNewGroup("iup", "IuP");
             am.createNewGroup("city", "Stadt Bremerhaven");
 
 
             //  Add users to respective groups
+            LOGGER.info("Füge Nutzer den einzelnen Gruppen zu...");
             am.createMembership("judith", "asta");
             am.createMembership("alexander", "iup");
             am.createMembership("sabine", "city");
@@ -84,10 +90,11 @@ public class CamundaBpmProcessApplication extends ServletProcessApplication {
 
 
             // create default filters
+            LOGGER.info("Erzeuge neue Filter für Gruppen...");
             am.createGroupFilter("Aufgaben für Gruppe AStA", -3, "asta", "AStA", "demo", READ);
             am.createGroupFilter("Aufgaben für Gruppe IuP", -3, "iup", "IuP", "demo", READ);
             am.createGroupFilter("Aufgaben für Gruppe Stadt", -3, "city", "Stadt Bremerhaven", "demo", READ);
-
+            am.createAllTasksFilter();
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
         }

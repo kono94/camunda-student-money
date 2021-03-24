@@ -32,8 +32,8 @@
       </bpmn:lane>
       <bpmn:lane id="Lane_17oxpte" name="IUP-Amt" />
       <bpmn:lane id="Lane_1fpsq7q" name="AStA">
-        <bpmn:flowNodeRef>Activity_02magt0</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Event_1otwhe1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_02magt0</bpmn:flowNodeRef>
       </bpmn:lane>
     </bpmn:laneSet>
     <bpmn:sequenceFlow id="Flow_03x5281" sourceRef="Activity_03a6qew" targetRef="Gateway_0pwa7gh" />
@@ -42,37 +42,72 @@
     <bpmn:sequenceFlow id="Flow_00x2imt" name="nein" sourceRef="Gateway_0pwa7gh" targetRef="Activity_049az8v">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!dataValidationApproved}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:exclusiveGateway id="Gateway_0pwa7gh" name="Okay?">
-      <bpmn:incoming>Flow_03x5281</bpmn:incoming>
-      <bpmn:outgoing>Flow_00x2imt</bpmn:outgoing>
-      <bpmn:outgoing>Flow_0yne624</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:dataObjectReference id="DataObjectReference_07mk047" name="Regelwerk ,,Daten überprüfen&#39;&#39;" dataObjectRef="DataObject_1sp0vhy">
-      <bpmn:documentation>Plz. muss mit 275 beginnen</bpmn:documentation>
-      <bpmn:extensionElements>
-        <camunda:properties>
-          <camunda:property />
-        </camunda:properties>
-      </bpmn:extensionElements>
-    </bpmn:dataObjectReference>
-    <bpmn:dataObject id="DataObject_1sp0vhy" />
     <bpmn:sequenceFlow id="Flow_05e6jy5" sourceRef="Activity_049az8v" targetRef="Event_0huitbx" />
-    <bpmn:endEvent id="Event_0huitbx" name="Daten fehlerhaft; An das IuP-Amt wenden">
-      <bpmn:incoming>Flow_05e6jy5</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:userTask id="Activity_049az8v" name="Fehlermeldung einsehen" camunda:formKey="embedded:app:forms/display-error-message.html">
-      <bpmn:incoming>Flow_00x2imt</bpmn:incoming>
-      <bpmn:outgoing>Flow_05e6jy5</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:serviceTask id="Activity_03a6qew" name="Daten überprüfen" camunda:class="net.lwenstrom.flow.CheckDataDelegate">
-      <bpmn:incoming>Flow_0tebcbn</bpmn:incoming>
-      <bpmn:outgoing>Flow_03x5281</bpmn:outgoing>
-      <bpmn:property id="Property_0boif4k" name="__targetRef_placeholder" />
-      <bpmn:dataInputAssociation id="DataInputAssociation_11eorle">
-        <bpmn:sourceRef>DataObjectReference_07mk047</bpmn:sourceRef>
-        <bpmn:targetRef>Property_0boif4k</bpmn:targetRef>
-      </bpmn:dataInputAssociation>
+    <bpmn:sequenceFlow id="Flow_0yne624" name="ja" sourceRef="Gateway_0pwa7gh" targetRef="Activity_1mpwoal">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${dataValidationApproved}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0h826sg" sourceRef="Activity_1mpwoal" targetRef="Gateway_1itk7q2" />
+    <bpmn:sequenceFlow id="Flow_114jzcu" name="Ja" sourceRef="Gateway_1itk7q2" targetRef="Activity_0dxu0t4">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!duplicationCheckApproved}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0nb09xf" sourceRef="Activity_0dxu0t4" targetRef="Event_1h787l5" />
+    <bpmn:sequenceFlow id="Flow_06pj5qt" sourceRef="Activity_14y6vt0" targetRef="Activity_1kdtvwe" />
+    <bpmn:sequenceFlow id="Flow_1xdcxym" sourceRef="Activity_1kdtvwe" targetRef="Activity_1j70nrp" />
+    <bpmn:sequenceFlow id="Flow_126l9kf" name="nein" sourceRef="Gateway_1itk7q2" targetRef="Activity_14y6vt0">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${duplicationCheckApproved}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_15yrryi" sourceRef="Activity_0ba335f" targetRef="Activity_1njr9vm" />
+    <bpmn:sequenceFlow id="Flow_192pm81" sourceRef="Activity_1njr9vm" targetRef="Activity_0im9beq" />
+    <bpmn:sequenceFlow id="Flow_06tbq2a" sourceRef="Activity_02magt0" targetRef="Event_1otwhe1" />
+    <bpmn:sendTask id="Activity_0im9beq" name="E-Mail mit PDF versenden" camunda:class="net.lwenstrom.SendPdfDelegate">
+      <bpmn:incoming>Flow_192pm81</bpmn:incoming>
+    </bpmn:sendTask>
+    <bpmn:sendTask id="Activity_1j70nrp" name="E-Mail mit Link versenden" camunda:class="net.lwenstrom.flow.SendActivationLinkDelegate">
+      <bpmn:incoming>Flow_1xdcxym</bpmn:incoming>
+    </bpmn:sendTask>
+    <bpmn:receiveTask id="Activity_0ba335f" name="Aktivierung in DB speichern" messageRef="activationLinkClicked">
+      <bpmn:outgoing>Flow_15yrryi</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:task id="Activity_14y6vt0" name="Daten des Formulars in DB speichern">
+      <bpmn:documentation>Geschieht direkt nach der Prüfung auf Duplikate im ServiceTask "Historische Anträge durchsuchen"</bpmn:documentation>
+      <bpmn:incoming>Flow_126l9kf</bpmn:incoming>
+      <bpmn:outgoing>Flow_06pj5qt</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:serviceTask id="Activity_1njr9vm" name="PDF-Datei mit Antrag generieren" camunda:class="net.lwenstrom.flow.PdfGenerationDelegate">
+      <bpmn:incoming>Flow_15yrryi</bpmn:incoming>
+      <bpmn:outgoing>Flow_192pm81</bpmn:outgoing>
     </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_1kdtvwe" name="Aktivierungslink generieren" camunda:class="net.lwenstrom.flow.ActivationLinkGeneratorDelegate">
+      <bpmn:incoming>Flow_06pj5qt</bpmn:incoming>
+      <bpmn:outgoing>Flow_1xdcxym</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_1mpwoal" name="Historische Anträge durchsuchen" camunda:class="net.lwenstrom.flow.CheckDuplicateDelegate">
+      <bpmn:incoming>Flow_0yne624</bpmn:incoming>
+      <bpmn:outgoing>Flow_0h826sg</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_1otwhe1">
+      <bpmn:incoming>Flow_06tbq2a</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Event_1h787l5" name="Antrag abgewiesen">
+      <bpmn:incoming>Flow_0nb09xf</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="Activity_0dxu0t4" name="Fehlermeldung einsehen" camunda:formKey="embedded:app:forms/display-error-message.html">
+      <bpmn:incoming>Flow_114jzcu</bpmn:incoming>
+      <bpmn:outgoing>Flow_0nb09xf</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_1itk7q2" name="Eintrag vorhanden?">
+      <bpmn:incoming>Flow_0h826sg</bpmn:incoming>
+      <bpmn:outgoing>Flow_114jzcu</bpmn:outgoing>
+      <bpmn:outgoing>Flow_126l9kf</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:startEvent id="Event_0s0qzir" name="Matrikelnummer erhalten">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="studentID" label="Matrikelnummer" type="long" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_0kvk92o</bpmn:outgoing>
+    </bpmn:startEvent>
     <bpmn:serviceTask id="Activity_1tth1uk" name="Studenten-informationen einholen">
       <bpmn:extensionElements>
         <camunda:connector>
@@ -98,86 +133,51 @@
       <bpmn:incoming>Flow_0kvk92o</bpmn:incoming>
       <bpmn:outgoing>Flow_0tebcbn</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:startEvent id="Event_0s0qzir" name="Matrikelnummer erhalten">
-      <bpmn:extensionElements>
-        <camunda:formData>
-          <camunda:formField id="studentID" label="Matrikelnummer" type="long" />
-        </camunda:formData>
-      </bpmn:extensionElements>
-      <bpmn:outgoing>Flow_0kvk92o</bpmn:outgoing>
-    </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_0yne624" name="ja" sourceRef="Gateway_0pwa7gh" targetRef="Activity_1mpwoal">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${dataValidationApproved}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
-    <bpmn:exclusiveGateway id="Gateway_1itk7q2" name="Eintrag vorhanden?">
-      <bpmn:incoming>Flow_0h826sg</bpmn:incoming>
-      <bpmn:outgoing>Flow_114jzcu</bpmn:outgoing>
-      <bpmn:outgoing>Flow_126l9kf</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:userTask id="Activity_0dxu0t4" name="Fehlermeldung einsehen" camunda:formKey="embedded:app:forms/display-error-message.html">
-      <bpmn:incoming>Flow_114jzcu</bpmn:incoming>
-      <bpmn:outgoing>Flow_0nb09xf</bpmn:outgoing>
+    <bpmn:serviceTask id="Activity_03a6qew" name="Daten überprüfen" camunda:class="net.lwenstrom.flow.CheckDataDelegate">
+      <bpmn:incoming>Flow_0tebcbn</bpmn:incoming>
+      <bpmn:outgoing>Flow_03x5281</bpmn:outgoing>
+      <bpmn:property id="Property_0boif4k" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_11eorle">
+        <bpmn:sourceRef>DataObjectReference_07mk047</bpmn:sourceRef>
+        <bpmn:targetRef>Property_0boif4k</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="Activity_049az8v" name="Fehlermeldung einsehen" camunda:formKey="embedded:app:forms/display-error-message.html">
+      <bpmn:incoming>Flow_00x2imt</bpmn:incoming>
+      <bpmn:outgoing>Flow_05e6jy5</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_0h826sg" sourceRef="Activity_1mpwoal" targetRef="Gateway_1itk7q2" />
-    <bpmn:sequenceFlow id="Flow_114jzcu" name="Ja" sourceRef="Gateway_1itk7q2" targetRef="Activity_0dxu0t4">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!duplicationCheckApproved}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0nb09xf" sourceRef="Activity_0dxu0t4" targetRef="Event_1h787l5" />
-    <bpmn:endEvent id="Event_1h787l5" name="Antrag abgewiesen">
-      <bpmn:incoming>Flow_0nb09xf</bpmn:incoming>
+    <bpmn:endEvent id="Event_0huitbx" name="Daten fehlerhaft; An das IuP-Amt wenden">
+      <bpmn:incoming>Flow_05e6jy5</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_06pj5qt" sourceRef="Activity_14y6vt0" targetRef="Activity_1kdtvwe" />
-    <bpmn:sequenceFlow id="Flow_1xdcxym" sourceRef="Activity_1kdtvwe" targetRef="Activity_1j70nrp" />
-    <bpmn:sequenceFlow id="Flow_126l9kf" name="nein" sourceRef="Gateway_1itk7q2" targetRef="Activity_14y6vt0">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${duplicationCheckApproved}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_15yrryi" sourceRef="Activity_0ba335f" targetRef="Activity_1njr9vm" />
-    <bpmn:sequenceFlow id="Flow_192pm81" sourceRef="Activity_1njr9vm" targetRef="Activity_0im9beq" />
-    <bpmn:manualTask id="Activity_02magt0" name="Antrag archivieren">
+    <bpmn:dataObjectReference id="DataObjectReference_07mk047" name="Regelwerk ,,Daten überprüfen&#39;&#39;" dataObjectRef="DataObject_1sp0vhy">
+      <bpmn:documentation>Plz. muss mit 275 beginnen</bpmn:documentation>
+      <bpmn:extensionElements>
+        <camunda:properties>
+          <camunda:property />
+        </camunda:properties>
+      </bpmn:extensionElements>
+    </bpmn:dataObjectReference>
+    <bpmn:dataObject id="DataObject_1sp0vhy" />
+    <bpmn:exclusiveGateway id="Gateway_0pwa7gh" name="Okay?">
+      <bpmn:incoming>Flow_03x5281</bpmn:incoming>
+      <bpmn:outgoing>Flow_00x2imt</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0yne624</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_02magt0" name="Antrag archivieren" camunda:candidateGroups="AStA">
       <bpmn:outgoing>Flow_06tbq2a</bpmn:outgoing>
-    </bpmn:manualTask>
-    <bpmn:endEvent id="Event_1otwhe1">
-      <bpmn:incoming>Flow_06tbq2a</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_06tbq2a" sourceRef="Activity_02magt0" targetRef="Event_1otwhe1" />
-    <bpmn:serviceTask id="Activity_1mpwoal" name="Historische Anträge durchsuchen" camunda:class="net.lwenstrom.flow.CheckDuplicateDelegate">
-      <bpmn:incoming>Flow_0yne624</bpmn:incoming>
-      <bpmn:outgoing>Flow_0h826sg</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_1kdtvwe" name="Aktivierungslink generieren" camunda:class="net.lwenstrom.flow.ActivationLinkGeneratorDelegate">
-      <bpmn:incoming>Flow_06pj5qt</bpmn:incoming>
-      <bpmn:outgoing>Flow_1xdcxym</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_1njr9vm" name="PDF-Datei mit Antrag generieren" camunda:class="net.lwenstrom.flow.PdfGenerationDelegate">
-      <bpmn:incoming>Flow_15yrryi</bpmn:incoming>
-      <bpmn:outgoing>Flow_192pm81</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:task id="Activity_14y6vt0" name="Daten des Formulars in DB speichern">
-      <bpmn:documentation>Geschieht direkt nach der Prüfung auf Duplikate im ServiceTask "Historische Anträge durchsuchen"</bpmn:documentation>
-      <bpmn:incoming>Flow_126l9kf</bpmn:incoming>
-      <bpmn:outgoing>Flow_06pj5qt</bpmn:outgoing>
-    </bpmn:task>
-    <bpmn:receiveTask id="Activity_0ba335f" name="Aktivierung in DB speichern" messageRef="activationLinkClicked">
-      <bpmn:outgoing>Flow_15yrryi</bpmn:outgoing>
-    </bpmn:receiveTask>
-    <bpmn:sendTask id="Activity_1j70nrp" name="E-Mail mit Link versenden" camunda:class="net.lwenstrom.flow.SendActivationLinkDelegate">
-      <bpmn:incoming>Flow_1xdcxym</bpmn:incoming>
-    </bpmn:sendTask>
-    <bpmn:sendTask id="Activity_0im9beq" name="E-Mail mit PDF versenden" camunda:class="net.lwenstrom.SendPdfDelegate">
-      <bpmn:incoming>Flow_192pm81</bpmn:incoming>
-    </bpmn:sendTask>
-    <bpmn:textAnnotation id="TextAnnotation_08thrko">
-      <bpmn:text>10</bpmn:text>
-    </bpmn:textAnnotation>
-    <bpmn:association id="Association_1uph063" sourceRef="Activity_03a6qew" targetRef="TextAnnotation_08thrko" />
-    <bpmn:textAnnotation id="TextAnnotation_1d2iv9i">
-      <bpmn:text>20</bpmn:text>
-    </bpmn:textAnnotation>
-    <bpmn:association id="Association_1ksm4vj" sourceRef="Activity_0im9beq" targetRef="TextAnnotation_1d2iv9i" />
+    </bpmn:userTask>
     <bpmn:textAnnotation id="TextAnnotation_1kzvca5">
       <bpmn:text>30</bpmn:text>
     </bpmn:textAnnotation>
+    <bpmn:association id="Association_1ksm4vj" sourceRef="Activity_0im9beq" targetRef="TextAnnotation_1d2iv9i" />
+    <bpmn:textAnnotation id="TextAnnotation_1d2iv9i">
+      <bpmn:text>20</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="TextAnnotation_08thrko">
+      <bpmn:text>10</bpmn:text>
+    </bpmn:textAnnotation>
     <bpmn:association id="Association_1dftvy8" sourceRef="Activity_02magt0" targetRef="TextAnnotation_1kzvca5" />
+    <bpmn:association id="Association_1uph063" sourceRef="Activity_03a6qew" targetRef="TextAnnotation_08thrko" />
   </bpmn:process>
   <bpmn:process id="Process_1i84ro6" isExecutable="false">
     <bpmn:intermediateCatchEvent id="Event_1v6mert" name="E-Mail eingegangen">
@@ -352,9 +352,6 @@
           <dc:Bounds x="1075" y="386" width="59" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_02magt0_di" bpmnElement="Activity_02magt0">
-        <dc:Bounds x="2017" y="930" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1otwhe1_di" bpmnElement="Event_1otwhe1">
         <dc:Bounds x="2182" y="952" width="36" height="36" />
       </bpmndi:BPMNShape>
@@ -387,6 +384,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1dqzrpv_di" bpmnElement="Activity_0im9beq">
         <dc:Bounds x="1710" y="585" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_04zx94w_di" bpmnElement="Activity_02magt0">
+        <dc:Bounds x="2017" y="930" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Association_1uph063_di" bpmnElement="Association_1uph063">
         <di:waypoint x="604" y="692" />
