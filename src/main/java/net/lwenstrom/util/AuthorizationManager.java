@@ -88,8 +88,7 @@ public class AuthorizationManager {
             readProcessDefinition.addPermission(p);
         }
         readProcessDefinition.setResource(Resources.PROCESS_DEFINITION);
-        // restrict to invoice process definition only
-        readProcessDefinition.setResourceId(processDefinition);
+        //readProcessDefinition.setResourceId(processDefinition);
         authorizationService.saveAuthorization(readProcessDefinition);
     }
 

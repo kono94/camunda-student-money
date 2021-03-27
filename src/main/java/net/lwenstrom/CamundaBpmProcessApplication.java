@@ -77,23 +77,23 @@ public class CamundaBpmProcessApplication extends ServletProcessApplication {
 
 
             // authorize groups for tasklist only:
-            am.setTasklistAuthorizationForGroup("asta", ProcessConstants.PROCESS_DEFINITION_KEY, READ, READ_HISTORY);
-            am.setTasklistAuthorizationForGroup("iup", ProcessConstants.PROCESS_DEFINITION_KEY, READ, READ_HISTORY);
-            am.setTasklistAuthorizationForGroup("city", ProcessConstants.PROCESS_DEFINITION_KEY, READ, READ_HISTORY);
+            am.setTasklistAuthorizationForGroup("asta", ProcessConstants.PROCESS_DEFINITION_KEY, READ, READ_HISTORY, READ_INSTANCE);
+            am.setTasklistAuthorizationForGroup("iup", ProcessConstants.PROCESS_DEFINITION_KEY, READ, READ_HISTORY, READ_INSTANCE);
+            am.setTasklistAuthorizationForGroup("city", ProcessConstants.PROCESS_DEFINITION_KEY, READ, READ_HISTORY, READ_INSTANCE);
 
 
             // set user permissions in group
-            am.setUserPermissionInGroup("asta", "judith", READ);
-            am.setUserPermissionInGroup("iup", "alexander", READ);
-            am.setUserPermissionInGroup("city", "sabine", READ);
-            am.setUserPermissionInGroup("city", "christian", READ);
+            am.setUserPermissionInGroup("asta", "judith", READ, READ_INSTANCE);
+            am.setUserPermissionInGroup("iup", "alexander", READ, READ_INSTANCE);
+            am.setUserPermissionInGroup("city", "sabine", READ, READ_INSTANCE);
+            am.setUserPermissionInGroup("city", "christian", READ, READ_INSTANCE);
 
 
             // create default filters
             LOGGER.info("Erzeuge neue Filter für Gruppen...");
-            am.createGroupFilter("Aufgaben für Gruppe AStA", -3, "asta", "AStA", "demo", READ);
-            am.createGroupFilter("Aufgaben für Gruppe IuP", -3, "iup", "IuP", "demo", READ);
-            am.createGroupFilter("Aufgaben für Gruppe Stadt", -3, "city", "Stadt Bremerhaven", "demo", READ);
+            am.createGroupFilter("Aufgaben für Gruppe AStA", -3, "asta", "AStA", "demo", READ, READ_INSTANCE);
+            am.createGroupFilter("Aufgaben für Gruppe IuP", -3, "iup", "IuP", "demo", READ, READ_INSTANCE);
+            am.createGroupFilter("Aufgaben für Gruppe Stadt", -3, "city", "Stadt Bremerhaven", "demo", READ, READ_INSTANCE);
             am.createAllTasksFilter();
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());

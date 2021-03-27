@@ -13,4 +13,7 @@ public class ProcessConstants {
   public static final String VAR_STUDENT = "student";
   public static final String VAR_STUDENT_RAW_XML = "rawStudentXML";
   public static final String VAR_ACTIVATION_LINK = "activationLink";
+
+  // printed request has been archived by the AStA office
+  public static final String VAR_ARCHIVED = "archived";
 }

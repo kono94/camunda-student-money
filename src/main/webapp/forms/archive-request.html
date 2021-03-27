@@ -1,0 +1,48 @@
+<script cam-script type="text/form-script">
+
+    camForm.on('form-loaded', function() {
+      camForm.variableManager.fetchVariable('student');
+    });
+
+    camForm.on('variables-fetched', function() {
+      $scope.student = camForm.variableManager.variable('student').value;
+    });
+
+    console.log(student);
+</script>
+
+Der Begrueßungsgeldantrag wurde als PDF-Datei dem Antragssteller zugeschickt. Dieser wird
+diesen ausdrucken und bei Ihnen im Buero vorbeibringen. Bitte archivieren Sie diesen Antrag!
+<br><br>
+<strong>Antragssteller</strong>
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label">Name</label>
+        <div class="controls">
+            <input type="text"
+                   readonly="true"
+                   class="form-control" >{{student.name}} {{student.surname}}</input>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label">Matrikelnummer</label>
+        <div class="controls">
+            <input type="text"
+                   readonly="true"
+                   class="form-control" >{{student.studentID}}</input>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label">Archiviert?</label>
+        <div class="controls">
+            <input type="checkbox"
+                   cam-variable-name="archived"
+                   cam-variable-type="Boolean"
+                   name="archived"
+                   class="form-control" />
+        </div>
+    </div>
+
+</form>

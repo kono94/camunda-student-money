@@ -27,6 +27,9 @@ public class CheckDuplicateDelegate implements JavaDelegate {
         if (!studentTable.contains(student.getStudentID())) {
             rm.setDuplicateCheckApproved(true);
             studentTable.save(new StudentTableEntry(student));
+            execution.setProcessBusinessKey(String.valueOf(student.getStudentID()));
+            LOGGER.info("Process instance ID" + execution.getProcessInstanceId());
+            LOGGER.info("Business Key " + execution.getBusinessKey());
         } else {
             rm.setDuplicateCheckApproved(false);
             rm.setRejectionMessage("Dieser Student hat bereits einen Bergrueßungsgeldantrag gestellt!");
