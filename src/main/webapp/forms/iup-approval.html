@@ -1,0 +1,113 @@
+<form name="manualRating" role="form">
+
+    <script cam-script type="text/form-script">
+
+    camForm.on('form-loaded', function() {
+      camForm.variableManager.fetchVariable('student');
+    });
+
+    camForm.on('variables-fetched', function() {
+         $scope.student = camForm.variableManager.variable('student').value;
+          console.log(JSON.stringify($scope.student));
+    });
+
+  </script>
+
+    <div class="control-group">
+        <label class="control-label" for="rating">Vorname</label>
+        <div class="controls">
+            <input id="rating"
+                   name="name"
+                   class="form-control"
+                   type="text"
+                   required
+                   readonly="true"
+                   cam-variable-type="String"
+                   ng-model="student.name">
+        </div>
+        <br>
+        <label class="control-label" for="surname">Nachname</label>
+        <div class="controls">
+            <input id="surname"
+                   name="surname"
+                   class="form-control"
+                   type="text"
+                   required
+                   readonly="true"
+                   cam-variable-type="String"
+                   ng-model="student.surname">
+        </div>
+        <br>
+
+        <label class="control-label" for="birthday">Geburtstag</label>
+        <div class="controls">
+            <input id="birthday"
+                   name="birthday"
+                   class="form-control"
+                   type="text"
+                   required
+                   readonly="true"
+                   cam-variable-type="String"
+                   ng-model="student.birthday">
+        </div>
+        <br>
+
+        <label class="control-label" for="iban">IBAN</label>
+        <div class="controls">
+            <input id="iban"
+                   name="iban"
+                   class="form-control"
+                   type="text"
+                   required
+                   readonly="true"
+                   cam-variable-type="String"
+                   ng-model="student.iban">
+        </div>
+        <br>
+        <label class="control-label" for="street">Strasse</label>
+        <div class="controls">
+            <input id="street"
+                   name="street"
+                   class="form-control"
+                   type="text"
+                   required
+                   readonly="true"
+                   cam-variable-type="String"
+                   ng-model="student.street">
+        </div>
+        <br>
+
+        <label class="control-label" for="plz">PLZ</label>
+        <div class="controls">
+            <input id="plz"
+                   name="plz"
+                   class="form-control"
+                   type="number"
+                   required
+                   readonly="true"
+                   cam-variable-type="Long"
+                   ng-model="student.plz">
+        </div>
+        <br>
+
+        <label class="control-label" for="city">Stadt</label>
+        <div class="controls">
+            <input id="city"
+                   name="city"
+                   class="form-control"
+                   type="text"
+                   required
+                   readonly="true"
+                   cam-variable-type="String"
+                   ng-model="student.city">
+        </div>
+    </div>
+
+    <br>
+    <br>
+    <select cam-variable-name="iupApproved"
+            cam-variable-type="Boolean">
+        <option value="true">Genehmigen</option>
+        <option value="false">Ablehnen</option>
+    </select>
+</form>

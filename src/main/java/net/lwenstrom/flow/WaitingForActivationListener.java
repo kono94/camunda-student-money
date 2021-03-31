@@ -1,5 +1,6 @@
 package net.lwenstrom.flow;
 
+import net.lwenstrom.ProcessConstants;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.ExecutionListener;
 

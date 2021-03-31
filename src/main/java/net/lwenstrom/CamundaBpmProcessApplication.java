@@ -16,7 +16,7 @@ import static org.camunda.bpm.engine.authorization.Permissions.*;
 /**
  * Process Application exposing this application's resources the process engine.
  */
-@ProcessApplication
+    @ProcessApplication
 public class CamundaBpmProcessApplication extends ServletProcessApplication {
 
     private final Logger LOGGER = Logger.getLogger(CamundaBpmProcessApplication.class.getName());
@@ -83,17 +83,17 @@ public class CamundaBpmProcessApplication extends ServletProcessApplication {
 
 
             // set user permissions in group
-            am.setUserPermissionInGroup("asta", "judith", READ, READ_INSTANCE);
-            am.setUserPermissionInGroup("iup", "alexander", READ, READ_INSTANCE);
-            am.setUserPermissionInGroup("city", "sabine", READ, READ_INSTANCE);
-            am.setUserPermissionInGroup("city", "christian", READ, READ_INSTANCE);
+            am.setUserPermissionInGroup("asta", "judith", READ);
+            am.setUserPermissionInGroup("iup", "alexander", READ);
+            am.setUserPermissionInGroup("city", "sabine", READ);
+            am.setUserPermissionInGroup("city", "christian", READ);
 
 
             // create default filters
             LOGGER.info("Erzeuge neue Filter für Gruppen...");
-            am.createGroupFilter("Aufgaben für Gruppe AStA", -3, "asta", "AStA", "demo", READ, READ_INSTANCE);
-            am.createGroupFilter("Aufgaben für Gruppe IuP", -3, "iup", "IuP", "demo", READ, READ_INSTANCE);
-            am.createGroupFilter("Aufgaben für Gruppe Stadt", -3, "city", "Stadt Bremerhaven", "demo", READ, READ_INSTANCE);
+            am.createGroupFilter("Aufgaben für Gruppe AStA", -3, "asta", "AStA", "demo", READ);
+            am.createGroupFilter("Aufgaben für Gruppe IuP", -3, "iup", "IuP", "demo", READ);
+            am.createGroupFilter("Aufgaben für Gruppe Stadt", -3, "city", "Stadt Bremerhaven", "demo", READ);
             am.createAllTasksFilter();
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());

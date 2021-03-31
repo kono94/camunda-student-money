@@ -1,0 +1,42 @@
+<form name="manualRating" role="form">
+
+    <script cam-script type="text/form-script">
+
+    camForm.on('form-loaded', function() {
+      camForm.variableManager.fetchVariable('student');
+    });
+
+    camForm.on('variables-fetched', function() {
+         $scope.student = camForm.variableManager.variable('student').value;
+         console.log(JSON.stringify($scope.student));
+    });
+
+    camForm.on('submit', function() {
+        delete $scope.student.$$hashKey;
+    });
+
+
+
+  </script>
+    <p class="lead">Antragsteller:</p>
+    Name: <strong>{{student.name}} {{student.surName}}</strong>
+    <br>
+    Geburtstag: <strong>{{student.birthday}}</strong>
+    <br>
+    Matrikelnummer: <strong>{{student.studentID}}</strong>
+    <br>
+    Addresse: <strong>{{student.street}}, {{student.plz}} {{student.city}}</strong>
+    <br>
+    IBAN: <strong>{{student.iban}}</strong>
+    <br>
+    <br>
+
+    <br>
+    <br>
+
+    <select cam-variable-name="astaApproved"
+            cam-variable-type="Boolean">
+        <option value="true">Genehmigen</option>
+        <option value="false">Ablehnen</option>
+    </select>
+</form>
