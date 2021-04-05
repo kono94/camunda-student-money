@@ -36,7 +36,6 @@
         <bpmn:flowNodeRef>Activity_0im9beq</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_049az8v</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1tth1uk</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Gateway_0fqg5sy</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_0nyu1z5" name="Stadt Bremerhaven" />
     </bpmn:laneSet>
@@ -71,7 +70,7 @@
     <bpmn:sequenceFlow id="Flow_00x2imt" name="nein" sourceRef="Gateway_0pwa7gh" targetRef="Activity_049az8v">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!dataValidationApproved}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0tebcbn" sourceRef="Activity_1tth1uk" targetRef="Gateway_0fqg5sy" />
+    <bpmn:sequenceFlow id="Flow_0tebcbn" sourceRef="Activity_1tth1uk" targetRef="Activity_03a6qew" />
     <bpmn:sequenceFlow id="Flow_0kvk92o" sourceRef="Event_0s0qzir" targetRef="Activity_1tth1uk" />
     <bpmn:sequenceFlow id="Flow_03x5281" sourceRef="Activity_03a6qew" targetRef="Gateway_0pwa7gh" />
     <bpmn:sequenceFlow id="Flow_0v2h5no" sourceRef="Activity_1j70nrp" targetRef="Activity_0ba335f" />
@@ -105,7 +104,6 @@
     </bpmn:userTask>
     <bpmn:userTask id="Activity_02magt0" name="Antrag archivieren" camunda:formKey="embedded:app:forms/archive-request.html" camunda:candidateGroups="asta">
       <bpmn:incoming>Flow_0iveaf6</bpmn:incoming>
-      <bpmn:incoming>Flow_0s524zu</bpmn:incoming>
       <bpmn:outgoing>Flow_0p3f08z</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:userTask id="Activity_049az8v" name="Fehlermeldung einsehen" camunda:formKey="embedded:app:forms/display-error-message.html">
@@ -161,12 +159,11 @@
         <camunda:formData>
           <camunda:formField id="studentID" label="Matrikelnummer" type="long" />
         </camunda:formData>
-        <camunda:executionListener class="net.lwenstrom.flow.StartProcessListener" event="end" />
       </bpmn:extensionElements>
       <bpmn:outgoing>Flow_0kvk92o</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:serviceTask id="Activity_03a6qew" name="Daten überprüfen" camunda:class="net.lwenstrom.flow.CheckDataDelegate">
-      <bpmn:incoming>Flow_05tb0f0</bpmn:incoming>
+      <bpmn:incoming>Flow_0tebcbn</bpmn:incoming>
       <bpmn:outgoing>Flow_03x5281</bpmn:outgoing>
       <bpmn:property id="Property_0boif4k" name="__targetRef_placeholder" />
       <bpmn:dataInputAssociation id="DataInputAssociation_11eorle">
@@ -191,12 +188,6 @@
       <bpmn:outgoing>Flow_00x2imt</bpmn:outgoing>
       <bpmn:outgoing>Flow_0yne624</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_05tb0f0" sourceRef="Gateway_0fqg5sy" targetRef="Activity_03a6qew">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${1==2}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0s524zu" sourceRef="Gateway_0fqg5sy" targetRef="Activity_02magt0">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${1==1}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
     <bpmn:serviceTask id="Activity_1tth1uk" name="Studenten-informationen einholen">
       <bpmn:extensionElements>
         <camunda:connector>
@@ -222,11 +213,6 @@
       <bpmn:incoming>Flow_0kvk92o</bpmn:incoming>
       <bpmn:outgoing>Flow_0tebcbn</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:exclusiveGateway id="Gateway_0fqg5sy">
-      <bpmn:incoming>Flow_0tebcbn</bpmn:incoming>
-      <bpmn:outgoing>Flow_05tb0f0</bpmn:outgoing>
-      <bpmn:outgoing>Flow_0s524zu</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
     <bpmn:textAnnotation id="TextAnnotation_08ctswg">
       <bpmn:text>Warte auf Message (POST-Request mit passendem Payload)
 Klick auf Aktivierungslink durch Antragssteller</bpmn:text>
@@ -318,7 +304,7 @@ Klick auf Aktivierungslink durch Antragssteller</bpmn:text>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0tebcbn_di" bpmnElement="Flow_0tebcbn">
         <di:waypoint x="500" y="792" />
-        <di:waypoint x="525" y="792" />
+        <di:waypoint x="600" y="792" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_00x2imt_di" bpmnElement="Flow_00x2imt">
         <di:waypoint x="800" y="767" />
@@ -416,15 +402,6 @@ Klick auf Aktivierungslink durch Antragssteller</bpmn:text>
       <bpmndi:BPMNEdge id="Flow_0cv7nin_di" bpmnElement="Flow_0cv7nin">
         <di:waypoint x="2700" y="1380" />
         <di:waypoint x="2762" y="1380" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_05tb0f0_di" bpmnElement="Flow_05tb0f0">
-        <di:waypoint x="575" y="792" />
-        <di:waypoint x="600" y="792" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0s524zu_di" bpmnElement="Flow_0s524zu">
-        <di:waypoint x="550" y="817" />
-        <di:waypoint x="550" y="1140" />
-        <di:waypoint x="2017" y="1140" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_0serfww_di" bpmnElement="Event_0serfww">
         <dc:Bounds x="2762" y="1362" width="36" height="36" />
@@ -525,6 +502,9 @@ Klick auf Aktivierungslink durch Antragssteller</bpmn:text>
           <dc:Bounds x="744" y="755" width="32" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0329wpd_di" bpmnElement="Activity_1tth1uk">
+        <dc:Bounds x="400" y="752" width="100" height="80" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_08ctswg_di" bpmnElement="TextAnnotation_08ctswg">
         <dc:Bounds x="1550" y="500" width="190" height="81" />
       </bpmndi:BPMNShape>
@@ -542,12 +522,6 @@ Klick auf Aktivierungslink durch Antragssteller</bpmn:text>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_1kzvca5_di" bpmnElement="TextAnnotation_1kzvca5" bioc:stroke="rgb(229, 57, 53)" bioc:fill="rgb(255, 205, 210)">
         <dc:Bounds x="1920" y="1090" width="50" height="30" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0329wpd_di" bpmnElement="Activity_1tth1uk">
-        <dc:Bounds x="400" y="752" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_0fqg5sy_di" bpmnElement="Gateway_0fqg5sy" isMarkerVisible="true">
-        <dc:Bounds x="525" y="767" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Association_1ksm4vj_di" bpmnElement="Association_1ksm4vj">
         <di:waypoint x="1781" y="802" />

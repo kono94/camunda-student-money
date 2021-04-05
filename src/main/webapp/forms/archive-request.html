@@ -1,48 +1,45 @@
-<script cam-script type="text/form-script">
+<form name="manualRating" role="form">
+
+    <script cam-script type="text/form-script">
 
     camForm.on('form-loaded', function() {
       camForm.variableManager.fetchVariable('student');
     });
 
     camForm.on('variables-fetched', function() {
-      $scope.student = camForm.variableManager.variable('student').value;
+         $scope.student = camForm.variableManager.variable('student').value;
+         console.log(JSON.stringify($scope.student));
     });
 
-    console.log(student);
-</script>
+    camForm.on('submit', function() {
+        delete $scope.student.$$hashKey;
+    });
 
-Der Begrueßungsgeldantrag wurde als PDF-Datei dem Antragssteller zugeschickt. Dieser wird
-diesen ausdrucken und bei Ihnen im Buero vorbeibringen. Bitte archivieren Sie diesen Antrag!
-<br><br>
-<strong>Antragssteller</strong>
-<form class="form-horizontal">
-    <div class="control-group">
-        <label class="control-label">Name</label>
-        <div class="controls">
-            <input type="text"
-                   readonly="true"
-                   class="form-control" >{{student.name}} {{student.surname}}</input>
-        </div>
-    </div>
+  </script>
 
-    <div class="control-group">
-        <label class="control-label">Matrikelnummer</label>
-        <div class="controls">
-            <input type="text"
-                   readonly="true"
-                   class="form-control" >{{student.studentID}}</input>
-        </div>
-    </div>
+    Der Begrueßungsgeldantrag wurde als PDF-Datei dem Antragssteller zugeschickt. Dieser wird
+    diesen ausdrucken und bei Ihnen im Buero vorbeibringen. Bitte archivieren Sie diesen Antrag!
+    <br>
 
-    <div class="control-group">
-        <label class="control-label">Archiviert?</label>
-        <div class="controls">
-            <input type="checkbox"
-                   cam-variable-name="archived"
-                   cam-variable-type="Boolean"
-                   name="archived"
-                   class="form-control" />
-        </div>
-    </div>
+    <p class="lead">Antragsteller:</p>
+    Name: <strong>{{student.name}} {{student.surName}}</strong>
+    <br>
+    Geburtstag: <strong>{{student.birthday}}</strong>
+    <br>
+    Matrikelnummer: <strong>{{student.studentID}}</strong>
+    <br>
+    Addresse: <strong>{{student.street}}, {{student.plz}} {{student.city}}</strong>
+    <br>
+    IBAN: <strong>{{student.iban}}</strong>
+    <br>
+    <br>
 
+    <br>
+    <br>
+
+    <select cam-variable-name="archived"
+            cam-variable-type="Boolean">
+        <option value="true">Ja</option>
+        <option value="false">Nein</option>
+    </select>
 </form>

@@ -24,6 +24,7 @@ public class ActivationLinkGeneratorDelegate implements JavaDelegate {
         StudentTableEntry studentTableEntry = StudentTable.getInstance().search(studentID);
         Student student = studentTableEntry.getStudent();
 
+
         ActivationLinkTable activationLinkTable = ActivationLinkTable.getInstance();
 
         String uuid = UUID.randomUUID().toString();
