@@ -1,8 +1,8 @@
 package net.lwenstrom;
 
 public class ProcessConstants {
-
   public static final String PROCESS_DEFINITION_KEY = "student-money"; // BPMN Process ID
+  public static double WELCOME_MONEY_AMOUNT = 150;
 
   public static final String PROCESS_REJECTION_MESSAGE = "rejectionMessage";
   public static final String PROCESS_DATA_VALIDATION_APPROVED = "dataValidationApproved";

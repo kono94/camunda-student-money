@@ -1,6 +1,7 @@
 package net.lwenstrom.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import net.lwenstrom.ProcessConstants;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -47,6 +48,10 @@ public class Student {
     protected int plz;
     @XmlElement(namespace="lwenstrom.net/ws/students")
     protected String city;
+
+    private String iupComment;
+    private String cityComment;
+    private Double amount = ProcessConstants.WELCOME_MONEY_AMOUNT;
 
 
     public String getName() {
@@ -119,5 +124,29 @@ public class Student {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getIupComment() {
+        return iupComment;
+    }
+
+    public void setIupComment(String iupComment) {
+        this.iupComment = iupComment;
+    }
+
+    public String getCityComment() {
+        return cityComment;
+    }
+
+    public void setCityComment(String cityComment) {
+        this.cityComment = cityComment;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 }

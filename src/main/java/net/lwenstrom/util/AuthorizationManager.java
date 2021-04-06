@@ -51,8 +51,8 @@ public class AuthorizationManager {
         filterService.deleteFilter(filter.getId());
     }
 
-    public void createMembership(String groupId, String userId){
-        identityService.createMembership(groupId, userId);
+    public void createMembership(String userId, String groupId){
+        identityService.createMembership(userId, groupId);
     }
     public void createNewUser(String userId,
                               String firstName,
