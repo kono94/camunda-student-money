@@ -1,8 +1,6 @@
 package net.lwenstrom.flow;
 
 import net.lwenstrom.ProcessConstants;
-import net.lwenstrom.mock.StudentTable;
-import net.lwenstrom.mock.StudentTableEntry;
 import net.lwenstrom.model.RejectionProcessVariables;
 import net.lwenstrom.model.Student;
 import org.camunda.bpm.engine.delegate.DelegateExecution;

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <CstmrCdtTrfInitn>
+        <GrpHdr>
+            <MsgId>2ec20655a1e54d21b651becef6ad906d</MsgId>
+            <CreDtTm>$R_CreDtTm</CreDtTm>
+            <NbOfTxs>1</NbOfTxs>
+            <CtrlSum>$R_CtrSum</CtrlSum>
+            <InitgPty>
+                <Nm>HOCHSCHULE BREMERHAVEN</Nm>
+            </InitgPty>
+        </GrpHdr>
+        <PmtInf>
+            <PmtInfId>HOCHSCHULEBREMERHAVEN-67540e50d47a</PmtInfId>
+            <PmtMtd>TRF</PmtMtd>
+            <BtchBookg>true</BtchBookg>
+            <NbOfTxs>1</NbOfTxs>
+            <CtrlSum>$R_CtrSum</CtrlSum>
+            <PmtTpInf>
+                <SvcLvl>
+                    <Cd>SEPA</Cd>
+                </SvcLvl>
+            </PmtTpInf>
+            <ReqdExctnDt>$R_ReqdExctnDt</ReqdExctnDt>
+            <Dbtr>
+                <Nm>HOCHSCHULE BREMERHAVEN</Nm>
+            </Dbtr>
+            <DbtrAcct>
+                <Id>
+                    <IBAN>DE20250000000025101562</IBAN>
+                </Id>
+            </DbtrAcct>
+            <DbtrAgt>
+                <FinInstnId />
+            </DbtrAgt>
+            <ChrgBr>SLEV</ChrgBr>
+            <CdtTrfTxInf>
+                <PmtId>
+                    <EndToEndId>NOTPROVIDED</EndToEndId>
+                </PmtId>
+                <Amt>
+                    <InstdAmt Ccy="EUR">$R_InstdAmt</InstdAmt>
+                </Amt>
+                <CdtrAgt>
+                    <FinInstnId />
+                </CdtrAgt>
+                <Cdtr>
+                    <Nm>$R_Nm</Nm>
+                </Cdtr>
+                <CdtrAcct>
+                    <Id>
+                        <IBAN>$R_CdtTrfTxInf_IBAN</IBAN>
+                    </Id>
+                </CdtrAcct>
+                <RmtInf>
+                    <Ustrd>BEGRUESSUNGSGELD</Ustrd>
+                </RmtInf>
+            </CdtTrfTxInf>
+        </PmtInf>
+    </CstmrCdtTrfInitn>
+</Document>
