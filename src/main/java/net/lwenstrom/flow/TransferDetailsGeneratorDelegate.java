@@ -19,7 +19,6 @@ public class TransferDetailsGeneratorDelegate implements JavaDelegate {
     public void execute(DelegateExecution execution) throws Exception {
         long studentID = (Long) execution.getVariable(ProcessConstants.VAR_STUDENT_ID);
         StudentTableEntry studentTableEntry = StudentTable.getInstance().search(studentID);
-        System.out.println(StudentTable.getInstance().count());
         Student student = studentTableEntry.getStudent();
 
         BankTransfer bankTransfer = new BankTransfer();

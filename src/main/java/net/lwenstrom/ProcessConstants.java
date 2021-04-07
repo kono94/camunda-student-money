@@ -1,5 +1,7 @@
 package net.lwenstrom;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+
 public class ProcessConstants {
   public static final String PROCESS_DEFINITION_KEY = "student-money"; // BPMN Process ID
   public static double WELCOME_MONEY_AMOUNT = 150;
@@ -16,6 +18,7 @@ public class ProcessConstants {
   public static final String VAR_STUDENT = "student";
   public static final String VAR_STUDENT_RAW_XML = "rawStudentXML";
   public static final String VAR_ACTIVATION_LINK = "activationLink";
+  public static final String VAR_REQUEST_PDF = "requestPDF";
   public static final String VAR_BANK_TRANSFER = "bankTransfer";
 
   // printed request has been archived by the AStA office
