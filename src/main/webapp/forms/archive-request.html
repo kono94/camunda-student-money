@@ -4,6 +4,15 @@
 
     camForm.on('form-loaded', function() {
       camForm.variableManager.fetchVariable('student');
+
+      fetch("http://localhost:8080/camunda/api/engine/engine/default/task/" + camForm.taskId + "/variables/requestPDF/data").then(function (response) {
+            return response.blob();
+        }).then(function (myBlob) {
+            var objectURL = URL.createObjectURL(myBlob);
+            document.querySelector('#pdf-frame').src = '';
+            document.querySelector('#pdf-frame').src = objectURL;
+            objectURL = URL.revokeObjectURL(myBlob);
+        });
     });
 
     camForm.on('variables-fetched', function() {
@@ -33,11 +42,12 @@
     IBAN: <strong>{{student.iban}}</strong>
     <br>
     <br>
-
+  <embed  class="col-sm-12" style="height:100vh;width:100%;margin-bottom: 40px" type="application/pdf" id="pdf-frame">
     <br>
     <br>
-
-    <select cam-variable-name="archived"
+  <label class="control-label" for="archive">Archiviert?</label><br>
+    <select id="archive"
+            cam-variable-name="archived"
             cam-variable-type="Boolean">
         <option value="true">Ja</option>
         <option value="false">Nein</option>

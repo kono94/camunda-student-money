@@ -8,7 +8,10 @@ import net.lwenstrom.util.PdfGenerator;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.camunda.bpm.engine.variable.Variables;
+import org.camunda.bpm.engine.variable.value.FileValue;
 
+import java.io.File;
 import java.util.logging.Logger;
 
 public class PdfGenerationDelegate implements JavaDelegate {
@@ -25,6 +28,16 @@ public class PdfGenerationDelegate implements JavaDelegate {
         PDDocument pdf = pdfGenerator.generate(student);
         LOGGER.info("PDF wurde erstellt (executionID=" + execution.getId() + ")");
 
-        execution.setVariable(ProcessConstants.VAR_REQUEST_PDF, pdf);
+
+        final File file = File.createTempFile("tmpRequest", ".pdf");
+        pdf.save(file);
+        FileValue typedFileValue = Variables
+                .fileValue("addresses.txt")
+                .file(file)
+                .mimeType("application/pdf")
+                .encoding("UTF-8")
+                .create();
+        pdf.close();
+        execution.setVariable(ProcessConstants.VAR_REQUEST_PDF, typedFileValue);
     }
 }
