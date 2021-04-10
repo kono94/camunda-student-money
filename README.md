@@ -6,9 +6,9 @@ a transfer (SEPA XML format) to the local bank is sent.
 
 More information regarding the process are located in the [documentation](documentation) folder!
 ## Process
-[BPMN Process](src/main/resources/GPM_Prozess_Begruessungsgeld.bpmn)
+[BPMN Process definition](src/main/resources/GPM_Prozess_Begruessungsgeld.bpmn)
 
-![BPMN Process](documentation/GPM_Prozess_Begruessungsgeld.svg)
+![PNG Image of the bpmn](documentation/GPM_Prozess_Begruessungsgeld.png)
 
 ## Highlights
 Uses a variety of more complex mechanisms regarding the camunda engine universe
