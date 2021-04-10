@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  camunda:
+    image: "camunda/camunda-bpm-platform:tomcat-7.14.0"
+    container_name: "camunda"
+    ports:
+      - "8080:8080"
+  soap:
+    image: "kono94/spring-student-soap-service"
+    container_name: "soap"
+    ports:
+      - "8089:8089"
