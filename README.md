@@ -92,6 +92,23 @@ Alternatively...
 of your application server e.g. `tomcat/webapps` or `wildfly/standalone/deployments`.
 For a faster 1-click (re-)deployment see the alternatives below.
 
+## Folder Structure
+- ```flow/```<br>
+Mostly Java Delegate classes reference in the .bpmn diagram to handle logic and the
+overall flow of the process.
+
+- ``mock/``<br>
+Includes classes and interfaces needed to mock two database tables (StudentTable and ActivationLinkTable).
+It was waived to use a dedicated database and just store the entries in-memory. To store those entities
+over multiple process instances, the classes representing db tables are defined as Singleton.<br>
+Furthermore includes the service to send emails to Mailtrap.
+
+- ``model/`` <br>
+Classes that are used to wrap process variables and POJOs.
+
+- ``util/``<br>
+Utility classes including an AuthorizationManager to simplify User and Group Management and 
+a PdfGenerator wrapper class that draws and in-memory saves PDF files.
 ## Additional information
 #### Useful REST-API calls:
 Show all deployments:
