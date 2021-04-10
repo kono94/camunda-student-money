@@ -8,7 +8,7 @@ More information regarding the process are located in the [documentation](docume
 ## Process
 [BPMN Process definition](src/main/resources/GPM_Prozess_Begruessungsgeld.bpmn)
 
-![PNG Image of the bpmn](documentation/GPM_Prozess_Begruessungsgeld.png)
+![PNG Image of the bpmn](documentation/GPM_Prozess_Begruessungsgeld.svg)
 
 ## Highlights
 Uses a variety of more complex mechanisms regarding the camunda engine universe
