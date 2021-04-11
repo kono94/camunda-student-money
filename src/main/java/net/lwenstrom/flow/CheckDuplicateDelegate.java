@@ -20,8 +20,8 @@ public class CheckDuplicateDelegate implements JavaDelegate {
 
         RejectionProcessVariables rm = new RejectionProcessVariables(execution);
         StudentTable studentTable = StudentTable.getInstance();
-        //TODO: remove
-        studentTable.reset();
+        // Only for development
+       // studentTable.reset();
 
         LOGGER.info(studentTable.count() + "");
         if (!studentTable.contains(student.getStudentID())) {

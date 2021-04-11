@@ -51,8 +51,11 @@ public class CamundaBpmProcessApplication extends ServletProcessApplication {
             am.deleteFilter("John's Tasks");
             am.deleteFilter("Accounting");
             am.deleteFilter("All Tasks");
+        }catch (Exception e) {
+                LOGGER.severe(e.getMessage());
+        }
 
-
+        try{
             // Create users
             LOGGER.info("Erzeuge neue Nutzer (Judith, Alexander, Sabine und Christian)...");
             am.createNewUser("judith", "Judith", "Moller", "judith", "jmoller@asta.hs-bremerhaven.de");
@@ -98,12 +101,5 @@ public class CamundaBpmProcessApplication extends ServletProcessApplication {
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
         }
-
-
-        // start an initial process instance
-//    Map<String, Object> variables = new HashMap<String, Object>();
-//    variables.put("name", "John");
-//
-//    processEngine.getRuntimeService().startProcessInstanceByKey(PROCESS_DEFINITION_KEY, variables);
     }
 }
