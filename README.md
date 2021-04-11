@@ -77,7 +77,7 @@ user because they get readded when the "invoice" example is getting deployed.
 
 In the end the maven container is stopped and completely removed.
 
-#### Or manually...
+#### Or (save) manual way...
 1. Build the application using:
 ```bash
 mvn clean package
@@ -89,6 +89,12 @@ docker run -d --name camunda -p 8080:8080 camunda/camunda-bpm-platform:tomcat-7.
 ```
 ```bash
 docker cp ./target/student-money.war camunda:/camunda/webapps/
+```
+
+Clone the SOAP Web service. Built it and run the jar.
+```
+mvn clean package
+java -jar target/student-web-service-0.0.1-SNAPSHOT.jar
 ```
 
 Alternatively...
